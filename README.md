@@ -39,7 +39,7 @@ Client → API Gateway → Lambda (Python) → Aurora Serverless v2
 
 ```bash
 # Outils requis
-terraform >= 1.12
+terraform >= 1.5
 aws-cli >= 2.0
 ```
 
