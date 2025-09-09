@@ -1,72 +1,132 @@
-# AWS Architecture Comparison: Classic vs Serverless
+# Comparaison d'Architectures AWS : Classique vs Serverless
 
-## Problématique
+Projet Terraform comparant une architecture traditionnelle EC2/RDS avec une infrastructure serverless Lambda/Aurora, incluant des métriques réelles de coût et de performance.
 
-Dans un contexte de transformation cloud, comment choisir objectivement entre une architecture traditionnelle (EC2/RDS) et une approche serverless (Lambda/Aurora) ? Ce projet compare quantitativement ces deux paradigmes avec des métriques réelles de coût, performance et complexité opérationnelle.
+## Vue d'ensemble
 
-## Solution Architecturale
+Ce projet démontre les meilleures pratiques Infrastructure as Code en déployant et comparant deux paradigmes d'architecture AWS :
+- **Classique** : ALB + EC2 + RDS MySQL
+- **Serverless** : API Gateway + Lambda + Aurora Serverless v2
+
+## Architecture
 
 ### Architecture Classique
 ![Architecture Classique](docs/assets/diagrams/architecture-classique.png)
 
-- **Frontend**: Application Load Balancer + WAF
-- **Compute**: Auto Scaling Group (EC2 t3.small)
-- **Database**: RDS MySQL t3.medium multi-AZ
-- **Network**: NAT Gateway pour connectivité sortante
-- **URL**: https://classique.projectdemocloud.com
+```
+Client → ALB → EC2 (PHP) → RDS MySQL
+```
+
+- **Frontend** : Application Load Balancer + WAF
+- **Compute** : Auto Scaling Group (EC2 t3.small)
+- **Base de données** : RDS MySQL t3.medium multi-AZ
+- **Réseau** : NAT Gateway pour connectivité sortante
 
 ### Architecture Serverless
 ![Architecture Serverless](docs/assets/diagrams/architecture-serverless.png)
 
-- **Frontend**: CloudFront + S3 + WAF
-- **Compute**: Lambda Python 3.12
-- **API**: API Gateway v2 HTTP
-- **Database**: Aurora Serverless v2 (0.5-4 ACU)
-- **Network**: VPC Endpoints pour services AWS
-- **URL**: https://serverless.projectdemocloud.com
+```
+Client → API Gateway → Lambda (Python) → Aurora Serverless v2
+```
 
-### Infrastructure Partagée
-- **Région**: eu-west-3 (Paris)
-- **Réseau**: VPC 10.0.0.0/16 avec subnets multi-AZ
-- **Sécurité**: ACM certificates, Secrets Manager, IAM roles
-- **Observabilité**: CloudWatch dashboards séparés, CloudTrail
-- **DNS**: Route 53 (projectdemocloud.com)
+- **Frontend** : CloudFront + S3 + WAF
+- **Compute** : Lambda Python 3.12
+- **API** : API Gateway v2 HTTP
+- **Base de données** : Aurora Serverless v2 (0.5-4 ACU)
+- **Réseau** : VPC Endpoints pour services AWS
 
-## Déploiement
+## Prérequis
 
-### Prérequis
 ```bash
 # Outils requis
 terraform >= 1.12
 aws-cli >= 2.0
-# Permissions : PowerUserAccess minimum
 ```
 
-### Architecture Terraform
+**Permissions AWS** : PowerUserAccess minimum
+
+## Structure du Projet
+
 ```
 terraform/
-├── bootstrap/          # Backend S3 + DynamoDB locks
-├── shared/            # VPC, certificats, secrets
+├── bootstrap/          # Backend S3 + verrous DynamoDB
+├── shared/            # VPC, certificats, secrets  
 ├── classique/         # Infrastructure traditionnelle
 └── serverless/        # Infrastructure cloud-native
 ```
 
-### Ordre de Déploiement
+## Démarrage Rapide
+
+### 1. Initialiser le Backend Terraform
 ```bash
-# 1. Backend Terraform
-cd bootstrap && terraform apply
-
-# 2. Infrastructure partagée
-cd shared && terraform apply
-
-# 3. Architecture(s) au choix
-cd classique && terraform apply
-cd serverless && terraform apply
+cd terraform/bootstrap
+terraform init
+terraform apply
 ```
 
-## Résultats Quantifiés
+### 2. Déployer l'Infrastructure Partagée
+```bash
+cd ../shared
+terraform init
+terraform apply
+```
 
-### Coûts Mensuels Observés
+### 3. Déployer l'Architecture de Votre Choix
+```bash
+# Architecture classique
+cd ../classique
+terraform init
+terraform apply
+
+# Architecture serverless (optionnel)
+cd ../serverless
+terraform init
+terraform apply
+```
+
+## Tests de Connectivité
+
+### Tests de Connectivité Base de Données
+
+**Test Architecture Classique :**
+![Test DB Classique](docs/assets/screenshots/interfaces/db-test-classique.png)
+
+**Flux technique :**
+1. **Client** → **ALB** (Application Load Balancer)
+2. **ALB** → **EC2** (instance avec application PHP)  
+3. **EC2** → **RDS MySQL** (base de données)
+
+**Métriques observées :**
+- URL : `https://classique.projectdemocloud.com/db-test.php`
+- Temps de réponse total : 5,96ms
+- Temps de requête DB : 1,61ms
+- Connexion stable via VPC privé
+
+**Test Architecture Serverless :**
+![Test DB Serverless](docs/assets/screenshots/interfaces/db-test-serverless.png)
+
+**Flux technique :**
+1. **Client** → **API Gateway**
+2. **API Gateway** → **Lambda** (fonction Python)
+3. **Lambda** → **Aurora Serverless v2** (cluster auto-scaling)
+
+**Métriques observées :**
+- API : Fonction Lambda via API Gateway
+- Temps de réponse total : 31,86ms
+- Version Aurora : 3.08.2
+- Pool de connexions : ID 417 actif
+
+### Comparaison des Performances
+
+| Métrique | Classique (ALB→EC2→RDS) | Serverless (API→Lambda→Aurora) | Écart |
+|----------|-------------------------|--------------------------------|-------|
+| **Latence totale** | ~6ms | ~32ms | +430% |
+| **Type de connexion** | Persistante | Pool de connexions | Variable |
+| **Surcharge réseau** | Minimale (VPC local) | API Gateway + démarrage à froid Lambda | +26ms |
+
+## Analyse des Coûts
+
+### Répartition des Coûts Mensuels
 
 | Charge de travail | Architecture Classique | Architecture Serverless | Économie |
 |-------------------|------------------------|-------------------------|----------|
@@ -74,108 +134,163 @@ cd serverless && terraform apply
 | **Modérée** (10k req/jour) | 166€ fixe | 85€ variable | **-49%** |
 | **Élevée** (100k+ req/jour) | 166€ fixe | 200€+ variable | Classique avantagé |
 
-### Métriques de Performance
+### Composants de Coût
 
+**Classique (Coûts Fixes) :**
+```
+EC2 t3.small :    ~25€/mois
+RDS t3.medium :   ~85€/mois  
+ALB :             ~20€/mois
+NAT Gateway :     ~36€/mois
+Total :           ~166€/mois
+```
+
+**Serverless (Coûts Variables) :**
+```
+Lambda :          0,0000002$/requête
+Aurora v2 :       0,12$/ACU-heure
+API Gateway :     0,0035$/1000 requêtes
+VPC Endpoints :   0,01$/heure par endpoint
+```
+
+### Cost Explorer - Analyse des Coûts
+
+*[Section à compléter avec captures Cost Explorer]*
+
+Les métriques seront filtrées par tags :
+```hcl
+tags = {
+  Environment = "classique"  # ou "serverless"
+  Project     = "Serverless_VS_Classique_2025"
+  CostCenter  = "classique-architecture"
+}
+```
+
+## Surveillance
+
+### Dashboards CloudWatch
 ![Dashboard Comparison Serverless](docs/assets/screenshots/dashboards/dashboard-comparison-serverless.png)
 ![Dashboard Comparison Classique](docs/assets/screenshots/dashboards/dashboard-comparison-classique.png)
 
-| Métrique | Classique | Serverless | Observation |
-|----------|-----------|------------|-------------|
-| **Latence stable** | 50-80ms | 50-80ms (warm) / 150ms (cold) | Cold start impact initial |
-| **Scaling time** | 3-5 minutes | < 10 secondes | Serverless 18x plus rapide |
-| **Availability** | 99.9% (multi-AZ) | 99.95% (natif) | Serverless légèrement supérieur |
-| **MTTR incidents** | 15-30 minutes | 2-5 minutes | Auto-scaling vs manuel |
+### Métriques de Performance
 
-### Interface de Test en Action
+| Métrique | Classique | Serverless | Notes |
+|----------|-----------|------------|-------|
+| **Démarrage à froid** | N/A | ~150ms | Initialisation Lambda |
+| **Latence à chaud** | 50-80ms | 50-80ms | Comparable une fois démarré |
+| **Temps de scaling** | 3-5 minutes | < 10 secondes | 18x plus rapide |
+| **Disponibilité** | 99,9% (Multi-AZ) | 99,95% (Natif) | Léger avantage serverless |
+
+## Fonctionnalités Infrastructure
+
+### Stratégie de Tags
+```hcl
+tags = {
+  Environment = "classique"  # ou "serverless"
+  Project     = "Serverless_VS_Classique_2025"
+  CostCenter  = "classique-architecture"
+}
+```
+
+### Sécurité
+- Protection WAF sur les deux architectures
+- Subnets privés VPC
+- Secrets Manager pour les identifiants
+- Rôles IAM avec privilèges minimaux
+- Certificats TLS via ACM
+
+### Réseau
+- **Région** : eu-west-3 (Paris)
+- **VPC** : 10.0.0.0/16 avec subnets multi-AZ
+- **Classique** : NAT Gateway pour besoins sortants variés
+- **Serverless** : VPC Endpoints pour accès services AWS
+
+## Sorties (Outputs)
+
+Chaque architecture fournit :
+- URLs des applications
+- Points de terminaison des bases de données
+- URLs des dashboards CloudWatch
+- Noms DNS des load balancers
+
+## Nettoyage
+
+```bash
+# Détruire dans l'ordre inverse
+cd terraform/serverless && terraform destroy
+cd ../classique && terraform destroy
+cd ../shared && terraform destroy
+cd ../bootstrap && terraform destroy
+```
+
+## Documentation
+
+- [Architecture Decision Records](docs/decisions/)
+- [Guide de Dépannage](docs/troubleshooting/common-issues.md)
+- [Analyse Business](docs/analysis/)
+
+## Décisions Techniques
+
+### Stratégie Base de Données
+- **Classique** : RDS MySQL pour charges prévisibles
+- **Serverless** : Aurora v2 pour scaling variable
+
+### Stratégie Compute  
+- **Classique** : Auto Scaling EC2 pour charge constante
+- **Serverless** : Lambda pour traitement événementiel
+
+### Optimisation Réseau
+- **Classique** : NAT Gateway pour besoins sortants divers
+- **Serverless** : VPC Endpoints pour communication AWS uniquement
+
+## Leçons Apprises
+
+### Infrastructure as Code
+- Backends Terraform séparés évitent conflits d'état
+- Composition de modules améliore la réutilisabilité
+- Isolation d'état cruciale pour déploiements multi-environnements
+
+### Considérations Performance
+- Démarrages à froid ajoutent 100-150ms latence serverless
+- Stratégies de pool de connexions diffèrent significativement
+- Topologie réseau impacte caractéristiques performance
+
+### Optimisation Coût
+- Modèles coût fixe vs variable selon patterns d'usage
+- Serverless optimal pour charges imprévisibles
+- Architecture traditionnelle rentable à volumes élevés stables
+
+## Interface de Test
 
 ![Test Interface](docs/assets/screenshots/interfaces/test-interface-overview.png)
 
 L'application web permet de :
 - Tester les connexions DB en temps réel
-- Effectuer des load tests (100 requêtes)
-- Générer des métriques CloudWatch continues (tests 5 min)
-- Comparer visuellement les performances avec estimation de coûts
+- Effectuer des tests de charge (100 requêtes)
+- Générer des métriques CloudWatch continues
+- Comparer visuellement les performances
 
 ## Recommandations
 
 ### Choisir l'Architecture Classique quand :
-- **Charge stable** et prévisible (> 50k req/jour constant)
-- **Budget fixe** privilégié pour la planification
-- **Latence ultra-constante** requise (pas de cold start acceptable)
-- **Équipe** déjà experte en infrastructure traditionnelle
+- Charge stable et prévisible (> 50k req/jour constant)
+- Budget fixe privilégié pour planification
+- Latence ultra-constante requise
+- Équipe experte infrastructure traditionnelle
 
 ### Choisir l'Architecture Serverless quand :
-- **Charge variable** ou imprévisible (pics saisonniers)
-- **Time-to-market** critique (déploiements 75% plus rapides)
-- **Équipe réduite** (maintenance 75% réduite)
-- **Prototypage** ou environnements de test/développement
+- Charge variable ou imprévisible (pics saisonniers)
+- Time-to-market critique
+- Équipe réduite (maintenance 75% réduite)
+- Prototypage ou environnements test/développement
 
-## Impact Business Mesuré
+## Contribution
 
-### Time to Market
-- **Déploiement** : Serverless 25% plus rapide
-- **Mise à jour** : 5 min vs 20 min (75% gain)
-- **Rollback** : Instantané vs 10-15 min
-
-### Maintenance Opérationnelle
-- **Classique** : 8h/mois (OS, patches, scaling)
-- **Serverless** : 2h/mois (code uniquement)
-- **Économie** : 6h/mois = 480€ de temps développeur
-
-## Architecture Decision Records
-
-Les choix techniques sont documentés dans [docs/decisions/](docs/decisions/) :
-- [ADR-001](docs/decisions/001-database-choice.md) - RDS vs Aurora Serverless v2
-- [ADR-002](docs/decisions/002-compute-strategy.md) - EC2/ALB vs Lambda/CloudFront  
-- [ADR-003](docs/decisions/003-network-strategy.md) - NAT Gateway vs VPC Endpoints
-- [ADR-004](docs/decisions/004-monitoring-strategy.md) - Dashboards séparés vs unifiés
-
-## Défis Techniques Résolus
-
-### Infrastructure as Code
-- **Problème** : États Terraform mélangés entre environnements
-- **Solution** : Backends S3 + DynamoDB locks séparés par stack
-- **Apprentissage** : Isolation des états critique pour éviter les conflits
-
-### Réseau et Connectivité
-- **Problème** : Confusion NAT Gateway vs VPC Endpoints selon l'architecture
-- **Solution** : NAT pour classique (besoins variés), VPC Endpoints pour serverless (AWS only)
-- **Apprentissage** : Optimisation réseau dépend du paradigme architectural
-
-### Monitoring et CORS
-- **Problème** : Métriques CloudWatch manquantes, erreurs CORS cross-origin
-- **Solution** : Dimensions correctes (DBInstanceIdentifier vs DBClusterIdentifier), headers CORS configurés
-- **Apprentissage** : Spécificités des services managés AWS
-
-Guide complet : [docs/troubleshooting/common-issues.md](docs/troubleshooting/common-issues.md)
-
-## Compétences Démontrées
-
-### Infrastructure Cloud
-- Terraform avancé (modules, remote state, gestion multi-environnements)
-- Maîtrise de 15+ services AWS en production
-- Résolution de problèmes complexes documentée
-- Approche comparative avec métriques quantifiées
-
-### Architecture et Opérations  
-- Comparaison méthodique de paradigmes (traditionnel vs cloud-native)
-- Optimisation coût/performance basée sur données réelles
-- Sécurité appliquée (WAF, VPC privés, chiffrement, IAM)
-- Observabilité avec dashboards CloudWatch personnalisés
-
-## Lessons Learned
-
-### Points Forts du Projet
-- **Méthodologie** : Comparaison objective avec métriques réelles
-- **Documentation** : ADR, troubleshooting, analyses business
-- **Niveau technique** : Infrastructure production-ready
-- **Approche pragmatique** : Recommandations basées sur l'usage
-
-### Améliorations Futures
-- [ ] CI/CD avec GitHub Actions pour déploiement automatisé
-- [ ] Tests d'infrastructure (Terratest ou équivalent)
-- [ ] Monitoring avancé avec AWS X-Ray pour tracing distribué
-- [ ] Extension multi-région pour démonstrer la scalabilité géographique
+1. Fork du repository
+2. Création branche feature
+3. Mise à jour documentation
+4. Test des modifications infrastructure
+5. Soumission pull request
 
 ## Contexte du Projet
 
@@ -183,8 +298,8 @@ Guide complet : [docs/troubleshooting/common-issues.md](docs/troubleshooting/com
 **Objectif** : Démonstration de compétences architecturales et méthodologiques  
 **Niveau** : Senior DevOps/Cloud Architect par compétences démontrées  
 
-Ce projet illustre une approche d'architecte cloud : comparaison quantitative, décisions justifiées par des données, et recommandations adaptées au contexte business plutôt qu'aux préférences techniques.
+Ce projet illustre une approche d'architecte cloud : comparaison quantitative, décisions justifiées par des données, et recommandations adaptées au contexte business.
 
 ---
 
-*Développé avec Terraform sur AWS • Documentation complète • Métriques réelles • Décisions justifiées*
+*Terraform • AWS • Infrastructure as Code • Analyse de Performance*
