@@ -155,16 +155,17 @@ VPC Endpoints :   0,01$/heure par endpoint
 
 ### Cost Explorer - Analyse des Coûts
 
-*[Section à compléter avec captures Cost Explorer]*
+![Cost Explorer Classique](docs/assets/screenshots/interfaces/cost-explorer-classique.png)
 
-Les métriques seront filtrées par tags :
+![Cost Explorer Serverless](docs/assets/screenshots/interfaces/cost-explorer-serverless.png)
+
+Les métriques sont filtrées par tags :
 ```hcl
 tags = {
   Environment = "classique"  # ou "serverless"
   Project     = "Serverless_VS_Classique_2025"
   CostCenter  = "classique-architecture"
 }
-```
 
 ## Surveillance
 
