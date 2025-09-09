@@ -7,7 +7,7 @@ Dans un contexte de transformation cloud, comment choisir objectivement entre un
 ## Solution Architecturale
 
 ### Architecture Classique
-![Architecture Classique](assets/diagrams/architecture-classique.png)
+![Architecture Classique](docs/assets/diagrams/architecture-classique.png)
 
 - **Frontend**: Application Load Balancer + WAF
 - **Compute**: Auto Scaling Group (EC2 t3.small)
@@ -16,7 +16,7 @@ Dans un contexte de transformation cloud, comment choisir objectivement entre un
 - **URL**: https://classique.projectdemocloud.com
 
 ### Architecture Serverless
-![Architecture Serverless](assets/diagrams/architecture-serverless.png)
+![Architecture Serverless](docs/assets/diagrams/architecture-serverless.png)
 
 - **Frontend**: CloudFront + S3 + WAF
 - **Compute**: Lambda Python 3.12
@@ -76,7 +76,7 @@ cd serverless && terraform apply
 
 ### Métriques de Performance
 
-![Dashboard Comparison](assets/screenshots/dashboards/dashboard-comparison.png)
+![Dashboard Comparison](docs/assets/screenshots/dashboards/dashboard-comparison.png)
 
 | Métrique | Classique | Serverless | Observation |
 |----------|-----------|------------|-------------|
@@ -87,7 +87,7 @@ cd serverless && terraform apply
 
 ### Interface de Test en Action
 
-![Test Interface](assets/screenshots/interfaces/test-interface-overview.png)
+![Test Interface](docs/assets/screenshots/interfaces/test-interface-overview.png)
 
 L'application web permet de :
 - Tester les connexions DB en temps réel
@@ -123,11 +123,11 @@ L'application web permet de :
 
 ## Architecture Decision Records
 
-Les choix techniques sont documentés dans [decisions/](decisions/) :
-- [ADR-001](decisions/001-database-choice.md) - RDS vs Aurora Serverless v2
-- [ADR-002](decisions/002-compute-strategy.md) - EC2/ALB vs Lambda/CloudFront
-- [ADR-003](decisions/003-network-strategy.md) - NAT Gateway vs VPC Endpoints
-- [ADR-004](decisions/004-monitoring-strategy.md) - Dashboards séparés vs unifiés
+Les choix techniques sont documentés dans [docs/decisions/](docs/decisions/) :
+- [ADR-001](docs/decisions/001-database-choice.md) - RDS vs Aurora Serverless v2
+- [ADR-002](docs/decisions/002-compute-strategy.md) - EC2/ALB vs Lambda/CloudFront
+- [ADR-003](docs/decisions/003-network-strategy.md) - NAT Gateway vs VPC Endpoints
+- [ADR-004](docs/decisions/004-monitoring-strategy.md) - Dashboards séparés vs unifiés
 
 ## Défis Techniques Résolus
 
@@ -146,7 +146,7 @@ Les choix techniques sont documentés dans [decisions/](decisions/) :
 - **Solution** : Dimensions correctes (DBInstanceIdentifier vs DBClusterIdentifier), headers CORS configurés
 - **Apprentissage** : Spécificités des services managés AWS
 
-Guide complet : [docs/troubleshooting/common-issues.md](docs/troubleshooting/common-issues.md)
+Guide complet : [docs/docs/troubleshooting/common-issues.md](docs/docs/troubleshooting/common-issues.md)
 
 ## Compétences Démontrées
 
