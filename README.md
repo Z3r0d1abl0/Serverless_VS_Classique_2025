@@ -76,7 +76,8 @@ cd serverless && terraform apply
 
 ### Métriques de Performance
 
-![Dashboard Comparison](docs/assets/screenshots/dashboards/dashboard-comparison.png)
+![Dashboard Comparison Serverless](docs/assets/screenshots/dashboards/dashboard-comparison-serverless.png)
+![Dashboard Comparison Classique](docs/assets/screenshots/dashboards/dashboard-comparison-classique.png)
 
 | Métrique | Classique | Serverless | Observation |
 |----------|-----------|------------|-------------|
@@ -125,7 +126,7 @@ L'application web permet de :
 
 Les choix techniques sont documentés dans [docs/decisions/](docs/decisions/) :
 - [ADR-001](docs/decisions/001-database-choice.md) - RDS vs Aurora Serverless v2
-- [ADR-002](docs/decisions/002-compute-strategy.md) - EC2/ALB vs Lambda/CloudFront
+- [ADR-002](docs/decisions/002-compute-strategy.md) - EC2/ALB vs Lambda/CloudFront  
 - [ADR-003](docs/decisions/003-network-strategy.md) - NAT Gateway vs VPC Endpoints
 - [ADR-004](docs/decisions/004-monitoring-strategy.md) - Dashboards séparés vs unifiés
 
@@ -146,7 +147,7 @@ Les choix techniques sont documentés dans [docs/decisions/](docs/decisions/) :
 - **Solution** : Dimensions correctes (DBInstanceIdentifier vs DBClusterIdentifier), headers CORS configurés
 - **Apprentissage** : Spécificités des services managés AWS
 
-Guide complet : [docs/docs/troubleshooting/common-issues.md](docs/docs/troubleshooting/common-issues.md)
+Guide complet : [docs/troubleshooting/common-issues.md](docs/troubleshooting/common-issues.md)
 
 ## Compétences Démontrées
 
