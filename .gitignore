@@ -1,0 +1,44 @@
+######################################################
+# TERRAFORM
+######################################################
+# Dossier de travail Terraform
+.terraform/
+.terraform.lock.hcl
+
+# États sensibles (tfstate)
+*.tfstate
+*.tfstate.*
+
+# Plans temporaires
+*.tfplan
+
+# Logs de crash
+crash.log
+
+# Variables locales (souvent contiennent des secrets)
+*.auto.tfvars
+terraform.tfvars
+
+######################################################
+# VISUAL STUDIO CODE
+######################################################
+.vscode/
+.history/
+
+######################################################
+# SYSTÈME / OS
+######################################################
+# Linux swap & cache
+*.swp
+*.swo
+
+
+
+
+# LAMBDA FUNCTIONS ( Python)
+*.py
+
+
+# Zips pour Lambda
+*.zip
+

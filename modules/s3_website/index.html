@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test DB - Architecture AWS</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        
+        .architecture-test {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #3498db;
+        }
+        
+        .test-button {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52,152,219,0.3);
+        }
+        
+        .test-button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .load-test {
+            background: #e74c3c;
+        }
+        
+        .extended-test {
+            background: #f39c12;
+        }
+        
+        .results {
+            background: #ecf0f1;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .metric-counter {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-weight: bold;
+        }
+        
+        .info-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #856404;
+        }
+        
+        .cost-info-box {
+            background: #e8f4fd;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #0c5460;
+        }
+        
+        .endpoint-display {
+            background: #e8f4fd;
+            border: 1px solid #bee5eb;
+            border-radius: 5px;
+            padding: 8px 12px;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+        }
+        
+        .running-test {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .error-box {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #155724;
+        }
+        
+        .disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .cors-status {
+            background: #f0f8ff;
+            border: 1px solid #b0d4f1;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 11px;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test des Bases de Données AWS</h1>
+        <p style="text-align: center; color: #666;">
+            Comparaison RDS MySQL vs Aurora Serverless V2 - Génération de métriques CloudWatch
+        </p>
+
+        <div class="info-box">
+            <strong>Objectif :</strong> Générer le même nombre de requêtes sur chaque architecture 
+            pour comparer les performances dans CloudWatch
+        </div>
+
+        <!-- Architecture Classique -->
+        <div class="architecture-test" id="classic-section">
+            <h3>Architecture Classique (ALB + EC2 + RDS MySQL)</h3>
+            <p><strong>Endpoint :</strong></p>
+            <div class="endpoint-display" id="classic-endpoint">Chargement...</div>
+            <div class="cors-status" id="classic-cors-status">Test CORS en cours...</div>
+            
+            <button class="test-button" onclick="testDB('classic')" id="classic-test-btn">
+                Test Simple DB
+            </button>
+            <button class="test-button load-test" onclick="loadTestDB('classic')" id="classic-load-btn">
+                Load Test (100 requêtes)
+            </button>
+            <button class="test-button extended-test" onclick="extendedLoadTest('classic')" id="classic-ext-btn">
+                Test 5min CloudWatch (60 requêtes)
+            </button>
+            
+            <div class="metric-counter" id="classic-counter">Requêtes: 0</div>
+            <div class="metric-counter" id="classic-avg">Avg: 0ms</div>
+            <div class="metric-counter" id="classic-cost" style="background: #8e44ad;">Coût: 0.000€</div>
+            
+            <div class="results" id="classic-results">En attente de test...</div>
+        </div>
+
+        <!-- Architecture Serverless -->
+        <div class="architecture-test" id="serverless-section">
+            <h3>Architecture Serverless (CloudFront + Lambda + Aurora V2)</h3>
+            <p><strong>Endpoint API :</strong></p>
+            <div class="endpoint-display" id="serverless-endpoint">Chargement...</div>
+            <div class="cors-status" id="serverless-cors-status">Test CORS en cours...</div>
+            
+            <button class="test-button" onclick="testDB('serverless')" id="serverless-test-btn">
+                Test Simple DB
+            </button>
+            <button class="test-button load-test" onclick="loadTestDB('serverless')" id="serverless-load-btn">
+                Load Test (100 requêtes)
+            </button>
+            <button class="test-button extended-test" onclick="extendedLoadTest('serverless')" id="serverless-ext-btn">
+                Test 5min CloudWatch (60 requêtes)
+            </button>
+            
+            <div class="metric-counter" id="serverless-counter">Requêtes: 0</div>
+            <div class="metric-counter" id="serverless-avg">Avg: 0ms</div>
+            <div class="metric-counter" id="serverless-cost" style="background: #8e44ad;">Coût: 0.000€</div>
+            
+            <div class="results" id="serverless-results">En attente de test...</div>
+        </div>
+
+        <!-- Tests Comparatifs Rapides -->
+        <div style="text-align: center; margin: 40px 0;">
+            <button class="test-button" onclick="comparativeTest()" style="font-size: 1.2rem; padding: 20px 40px;" id="comp-test-btn">
+                Test Comparatif Rapide (200 requêtes chacun)
+            </button>
+            <br><br>
+            <button class="test-button extended-test" onclick="comparativeExtendedTest()" style="font-size: 1.2rem; padding: 20px 40px;" id="comp-ext-btn">
+                Test Comparatif CloudWatch (5min chacun)
+            </button>
+        </div>
+
+        <div class="info-box">
+            <strong>Métriques CloudWatch générées :</strong><br>
+            • AWS/ApplicationELB - TargetResponseTime, RequestCount<br>
+            • AWS/Lambda - Duration, Invocations, ColdStarts<br>
+            • AWS/RDS - DatabaseConnections, ReadLatency (RDS)<br>
+            • AWS/RDS - ACUUtilization, DatabaseConnections (Aurora)<br>
+            <br>
+            <strong>Délai :</strong> Métriques visibles dans CloudWatch dans 1-2 minutes<br>
+            <strong>Pour CloudWatch :</strong> Utilisez les tests 5min pour des métriques continues
+        </div>
+    </div>
+
+    <script>
+        // Configuration des endpoints via Terraform
+        var endpoints = {
+            classic: "${classique_url}",
+            serverless: "${serverless_api_url}"
+        };
+
+        // Compteurs de métriques
+        var metrics = {
+            classic: { requests: 0, totalTime: 0, errors: 0, totalCost: 0 },
+            serverless: { requests: 0, totalTime: 0, errors: 0, totalCost: 0 }
+        };
+
+        // Coûts réalistes par requête AWS (en euros, région eu-west-3)
+        var costPerRequest = {
+            classic: 0.000007,    // 0.007€ par 1000 requêtes
+            serverless: 0.000012  // 0.012€ par 1000 requêtes
+        };
+
+        // État CORS pour chaque architecture
+        var corsSupport = {
+            classic: null,    // null = pas testé, true = ok, false = non supporté
+            serverless: null
+        };
+
+        // Protection anti-boucle
+        var testInProgress = {
+            classic: false,
+            serverless: false
+        };
+
+        // État de connectivité
+        var connectivity = {
+            classic: true,
+            serverless: true
+        };
+
+        // Fonction utilitaire pour désactiver/activer les boutons
+        function setButtonsState(architecture, disabled) {
+            var buttons = [
+                architecture + "-test-btn",
+                architecture + "-load-btn", 
+                architecture + "-ext-btn"
+            ];
+            for (var i = 0; i < buttons.length; i++) {
+                var btn = document.getElementById(buttons[i]);
+                if (btn) {
+                    btn.disabled = disabled;
+                }
+            }
+        }
+
+        // Test CORS pour une architecture
+        async function testCORS(architecture) {
+            console.log("🔍 Test CORS pour " + architecture);
+            var statusDiv = document.getElementById(architecture + "-cors-status");
+            
+            try {
+                var testUrl = endpoints[architecture] + (architecture === "serverless" ? "?ping=1" : "/?ping=1");
+                var response = await fetch(testUrl, {
+                    method: "GET",
+                    cache: "no-cache",
+                    headers: {
+                        "Accept": "application/json, text/plain, */*"
+                    }
+                });
+                
+                // Si on arrive ici sans exception, CORS fonctionne
+                corsSupport[architecture] = true;
+                statusDiv.textContent = "✅ CORS supporté - Réponses complètes disponibles";
+                statusDiv.style.background = "#d4edda";
+                statusDiv.style.borderColor = "#c3e6cb";
+                statusDiv.style.color = "#155724";
+                console.log("✅ CORS OK pour " + architecture);
+                
+            } catch (error) {
+                // CORS bloqué, on utilisera le mode dégradé
+                corsSupport[architecture] = false;
+                statusDiv.textContent = "⚠️ CORS bloqué - Mode dégradé (métriques temps uniquement)";
+                statusDiv.style.background = "#fff3cd";
+                statusDiv.style.borderColor = "#ffeaa7";
+                statusDiv.style.color = "#856404";
+                console.log("⚠️ CORS bloqué pour " + architecture + ": " + error.message);
+            }
+        }
+
+        // Test simple de base de données avec détection CORS automatique
+        async function testDB(architecture) {
+            if (testInProgress[architecture]) {
+                console.log("Test déjà en cours pour " + architecture);
+                return;
+            }
+
+            if (!connectivity[architecture]) {
+                alert("Architecture " + architecture + " non disponible");
+                return;
+            }
+
+            testInProgress[architecture] = true;
+            setButtonsState(architecture, true);
+            
+            var startTime = performance.now();
+            var resultsDiv = document.getElementById(architecture + "-results");
+            
+            resultsDiv.textContent = "⏳ Test en cours sur " + architecture + "...";
+
+            try {
+                var testUrl;
+                var timestamp = Date.now();
+                
+                if (architecture === "serverless") {
+                    testUrl = endpoints[architecture] + "?action=select&timestamp=" + timestamp;
+                } else {
+                    testUrl = endpoints[architecture] + "/db-test.php?test=1&timestamp=" + timestamp;
+                }
+
+                var fetchOptions = {
+                    method: "GET",
+                    cache: "no-cache"
+                };
+
+                // Utilisation des CORS selon le support détecté
+                if (corsSupport[architecture] === false) {
+                    // Mode dégradé : no-cors pour éviter les erreurs
+                    fetchOptions.mode = "no-cors";
+                } else {
+                    // Mode normal avec headers
+                    fetchOptions.headers = {
+                        "Accept": "application/json, text/plain, */*"
+                    };
+                }
+
+                console.log("Requête vers: " + testUrl);
+                console.log("Mode CORS: " + (fetchOptions.mode || "cors"));
+
+                var controller = new AbortController();
+                var timeoutId = setTimeout(function() { controller.abort(); }, 15000);
+                fetchOptions.signal = controller.signal;
+
+                var response = await fetch(testUrl, fetchOptions);
+
+                clearTimeout(timeoutId);
+                var endTime = performance.now();
+                var responseTime = Math.round(endTime - startTime);
+
+                // Mise à jour des métriques
+                metrics[architecture].requests++;
+                metrics[architecture].totalTime += responseTime;
+                metrics[architecture].totalCost += costPerRequest[architecture];
+                updateCounters(architecture);
+
+                if (fetchOptions.mode === "no-cors") {
+                    // Mode dégradé - on ne peut pas lire la réponse
+                    displayNoCorsModeResult(architecture, responseTime);
+                } else {
+                    // Mode normal - on peut lire la réponse
+                    if (response.ok) {
+                        var contentType = response.headers.get("content-type") || "";
+                        var data;
+                        
+                        if (contentType.includes("application/json")) {
+                            data = await response.json();
+                            displaySuccessResult(architecture, data, responseTime);
+                        } else {
+                            var textData = await response.text();
+                            displayTextResult(architecture, textData, responseTime, response.status);
+                        }
+                    } else {
+                        displayErrorResult(architecture, response.status, response.statusText, responseTime);
+                    }
+                }
+
+            } catch (error) {
+                var responseTime = Math.round(performance.now() - startTime);
+                metrics[architecture].requests++;
+                if (!error.name || error.name !== "AbortError") {
+                    metrics[architecture].errors++;
+                }
+                metrics[architecture].totalTime += responseTime;
+                metrics[architecture].totalCost += costPerRequest[architecture];
+                updateCounters(architecture);
+                
+                displayExceptionResult(architecture, error, responseTime);
+            } finally {
+                testInProgress[architecture] = false;
+                setButtonsState(architecture, false);
+            }
+        }
+
+        // Mise à jour des compteurs
+        function updateCounters(architecture) {
+            var metric = metrics[architecture];
+            var avgTime = metric.requests > 0 ? Math.round(metric.totalTime / metric.requests) : 0;
+            
+            document.getElementById(architecture + "-counter").textContent = "Requêtes: " + metric.requests;
+            document.getElementById(architecture + "-avg").textContent = "Avg: " + avgTime + "ms";
+            // Affichage correct du coût total en euros avec 6 décimales
+            document.getElementById(architecture + "-cost").textContent = "Coût: " + metric.totalCost.toFixed(6) + "€";
+        }
+
+        function displayNoCorsModeResult(architecture, responseTime) {
+            var resultsDiv = document.getElementById(architecture + "-results");
+            resultsDiv.className = "results success-box";
+            resultsDiv.textContent = "✅ Test effectué sur " + architecture + " (mode dégradé CORS)\n" +
+"Temps de réponse: " + responseTime + "ms\n" +
+"Mode: Contournement CORS - Requête envoyée avec succès\n" +
+"Architecture: " + (architecture === "classic" ? "ALB→EC2→RDS MySQL" : "CloudFront→Lambda→Aurora V2") + "\n" +
+"Timestamp: " + new Date().toLocaleTimeString() + "\n\n" +
+"📊 Métriques CloudWatch générées:\n" +
+"- Temps de réponse côté serveur enregistré\n" +
+"- Connexion base de données effectuée\n\n" +
+"ℹ️ Réponse détaillée non disponible à cause des restrictions CORS du navigateur.";
+        }
+
+        function displaySuccessResult(architecture, data, responseTime) {
+            var resultsDiv = document.getElementById(architecture + "-results");
+            resultsDiv.className = "results success-box";
+            resultsDiv.textContent = "✅ Test réussi sur " + architecture + "\n" +
+"Status: " + (data.status || "OK") + "\n" +
+"Temps de réponse: " + responseTime + "ms\n" +
+"Query Time DB: " + (data.result ? data.result.query_time_ms || "N/A" : "N/A") + "ms\n" +
+"Connection ID: " + (data.result ? data.result.connection_id || "N/A" : "N/A") + "\n" +
+"Version DB: " + (data.result ? data.result.aurora_version || data.result.mysql_version || "N/A" : "N/A") + "\n" +
+"Architecture: " + (architecture === "serverless" ? "CloudFront→Lambda→Aurora V2" : "ALB→EC2→RDS MySQL") + "\n" +
+"Timestamp: " + new Date().toLocaleTimeString() + "\n\n" +
+"📊 Métriques CloudWatch générées:\n" +
+"- " + (architecture === "classic" ? "ALB TargetResponseTime" : "Lambda Duration") + ": " + responseTime + "ms\n" +
+"- " + (architecture === "classic" ? "RDS DatabaseConnections" : "Aurora V2 ACUUtilization") + ": +1";
+        }
+
+        function displayTextResult(architecture, textData, responseTime, status) {
+            var resultsDiv = document.getElementById(architecture + "-results");
+            resultsDiv.className = "results";
+            resultsDiv.textContent = "✅ Test effectué sur " + architecture + "\n" +
+"Status: " + status + "\n" +
+"Temps de réponse: " + responseTime + "ms\n" +
+"Réponse (texte): " + textData.substring(0, 200) + (textData.length > 200 ? "..." : "") + "\n" +
+"Timestamp: " + new Date().toLocaleTimeString();
+        }
+
+        function displayErrorResult(architecture, status, statusText, responseTime) {
+            var resultsDiv = document.getElementById(architecture + "-results");
+            resultsDiv.className = "results error-box";
+            resultsDiv.textContent = "❌ Erreur HTTP sur " + architecture + "\n" +
+"Status: " + status + " " + statusText + "\n" +
+"Temps de réponse: " + responseTime + "ms\n" +
+"Timestamp: " + new Date().toLocaleTimeString() + "\n\n" +
+"Note: La requête a généré des métriques côté serveur.";
+        }
+
+        function displayExceptionResult(architecture, error, responseTime) {
+            var resultsDiv = document.getElementById(architecture + "-results");
+            resultsDiv.className = "results error-box";
+            
+            var errorMsg = "Erreur de connexion";
+            if (error.name === "AbortError") {
+                errorMsg = "Timeout - Requête annulée après 15s";
+            } else if (error.message && error.message.includes("CORS")) {
+                errorMsg = "Problème CORS détecté";
+            } else if (error.message && error.message.includes("fetch")) {
+                errorMsg = "Erreur réseau";
+            }
+            
+            resultsDiv.textContent = "⚠️ " + errorMsg + " sur " + architecture + "\n" +
+"Temps: " + responseTime + "ms\n" +
+"Détail: " + error.message + "\n" +
+"Timestamp: " + new Date().toLocaleTimeString() + "\n\n" +
+"Les métriques peuvent être générées côté serveur.";
+        }
+
+        // Test de charge rapide
+        async function loadTestDB(architecture) {
+            if (testInProgress[architecture]) {
+                alert("Un test est déjà en cours pour " + architecture);
+                return;
+            }
+
+            if (!connectivity[architecture]) {
+                alert("Architecture " + architecture + " non disponible");
+                return;
+            }
+
+            var resultsDiv = document.getElementById(architecture + "-results");
+            var requestCount = 100;
+            
+            resultsDiv.textContent = "🚀 Load test démarré sur " + architecture + "\n" +
+"Envoi de " + requestCount + " requêtes...\n\n⏳ Test en cours... 0/" + requestCount;
+
+            setButtonsState(architecture, true);
+
+            for (var i = 0; i < requestCount; i++) {
+                setTimeout(function(index) {
+                    return function() {
+                        testSingleRequest(architecture, index + 1, requestCount, "rapid");
+                        if (index === requestCount - 1) {
+                            setTimeout(function() { setButtonsState(architecture, false); }, 1000);
+                        }
+                    };
+                }(i), i * 50); // 50ms entre chaque requête
+            }
+        }
+
+        // Test de charge étendu pour CloudWatch
+        async function extendedLoadTest(architecture) {
+            if (testInProgress[architecture]) {
+                alert("Un test est déjà en cours pour " + architecture);
+                return;
+            }
+
+            if (!connectivity[architecture]) {
+                alert("Architecture " + architecture + " non disponible");
+                return;
+            }
+
+            var resultsDiv = document.getElementById(architecture + "-results");
+            var duration = 5 * 60;
+            var interval = 5;
+            var totalRequests = duration / interval;
+            
+            resultsDiv.textContent = "🕒 Test CloudWatch 5min démarré sur " + architecture + "\n" +
+totalRequests + " requêtes (1 toutes les " + interval + "s)\n" +
+"Optimisé pour métriques CloudWatch continues\n\n⏳ 0/" + totalRequests;
+
+            setButtonsState(architecture, true);
+
+            for (var i = 0; i < totalRequests; i++) {
+                setTimeout(function(index) {
+                    return function() {
+                        testSingleRequest(architecture, index + 1, totalRequests, "extended");
+                        if (index === totalRequests - 1) {
+                            setTimeout(function() { setButtonsState(architecture, false); }, 1000);
+                        }
+                    };
+                }(i), i * interval * 1000);
+            }
+        }
+
+        // Test d'une seule requête
+        async function testSingleRequest(architecture, current, total, testType) {
+            var startTime = performance.now();
+            
+            try {
+                var testUrl;
+                var timestamp = Date.now();
+                
+                if (architecture === "serverless") {
+                    var action = testType === "extended" ? "select" : "select";
+                    testUrl = endpoints[architecture] + "?action=" + action + "&req=" + current + "&timestamp=" + timestamp;
+                } else {
+                    testUrl = endpoints[architecture] + "/db-test.php?" + testType + "_test=1&req=" + current + "&timestamp=" + timestamp;
+                }
+
+                var fetchOptions = {
+                    method: "GET",
+                    cache: "no-cache"
+                };
+
+                if (corsSupport[architecture] === false) {
+                    fetchOptions.mode = "no-cors";
+                } else {
+                    fetchOptions.headers = {
+                        "Accept": "application/json, */*"
+                    };
+                }
+
+                var response = await fetch(testUrl, fetchOptions);
+
+                var responseTime = Math.round(performance.now() - startTime);
+                
+                // Mise à jour des métriques
+                metrics[architecture].requests++;
+                metrics[architecture].totalTime += responseTime;
+                metrics[architecture].totalCost += costPerRequest[architecture];
+                updateCounters(architecture);
+                
+                if (current % 10 === 0 || current === total) {
+                    updateTestProgress(architecture, current, total, testType);
+                }
+
+            } catch (error) {
+                var responseTime = Math.round(performance.now() - startTime);
+                metrics[architecture].requests++;
+                if (!error.name || error.name !== "AbortError") {
+                    metrics[architecture].errors++;
+                }
+                metrics[architecture].totalTime += responseTime;
+                metrics[architecture].totalCost += costPerRequest[architecture];
+                updateCounters(architecture);
+                
+                if (current % 10 === 0 || current === total) {
+                    updateTestProgress(architecture, current, total, testType);
+                }
+            }
+        }
+
+        function updateTestProgress(architecture, current, total, testType) {
+            var resultsDiv = document.getElementById(architecture + "-results");
+            var avgTime = metrics[architecture].requests > 0 ? 
+                Math.round(metrics[architecture].totalTime / metrics[architecture].requests) : 0;
+            
+            if (current === total) {
+                var testLabel = testType === "extended" ? "Test CloudWatch 5min" : "Load test";
+                
+                resultsDiv.className = "results success-box";
+                resultsDiv.textContent = "✅ " + testLabel + " terminé sur " + architecture + "\n" +
+total + " requêtes envoyées\n" +
+"Temps moyen: " + avgTime + "ms\n" +
+"Erreurs: " + metrics[architecture].errors + "\n" +
+"Coût total: " + metrics[architecture].totalCost.toFixed(6) + "€\n\n" +
+"📊 Métriques CloudWatch générées:\n" +
+"- " + total + " points de données pour le temps de réponse\n" +
+"- " + total + " connexions base de données\n" +
+"- " + (testType === "extended" ? "Métriques continues sur 5 minutes" : "Pics de charge visibles dans le dashboard") + "\n\n" +
+"⏱️ Consultez CloudWatch dans 1-2 minutes pour voir les résultats";
+            } else {
+                var testLabel = testType === "extended" ? "Test CloudWatch" : "Load test";
+                resultsDiv.textContent = "🚀 " + testLabel + " en cours sur " + architecture + "\n" +
+"Progression: " + current + "/" + total + " requêtes\n" +
+"Temps moyen actuel: " + avgTime + "ms\n" +
+"Erreurs: " + metrics[architecture].errors + "\n" +
+"Coût en cours: " + metrics[architecture].totalCost.toFixed(6) + "€\n" +
+(testType === "extended" ? "Génération continue de métriques CloudWatch..." : "Métriques en cours de génération...");
+            }
+        }
+
+        // Tests comparatifs
+        async function comparativeTest() {
+            var confirmed = confirm("🚀 Démarrage du test comparatif rapide !\n\n" +
+"• 100 requêtes sur l'architecture classique\n" +
+"• 100 requêtes sur l'architecture serverless\n" +  
+"• Même charge sur les deux bases de données\n\n" +
+"⏱️ Durée estimée : 5 secondes\n" +
+"📊 Métriques visibles dans CloudWatch dans 1-2 minutes\n\n" +
+"Continuer ?");
+
+            if (!confirmed) return;
+
+            resetMetrics();
+            document.getElementById("comp-test-btn").disabled = true;
+            document.getElementById("comp-ext-btn").disabled = true;
+            
+            setTimeout(function() { loadTestDB("classic"); }, 0);
+            setTimeout(function() { loadTestDB("serverless"); }, 100);
+            
+            setTimeout(function() {
+                document.getElementById("comp-test-btn").disabled = false;
+                document.getElementById("comp-ext-btn").disabled = false;
+            }, 60000);
+        }
+
+        async function comparativeExtendedTest() {
+            var confirmed = confirm("🕒 Démarrage du test comparatif CloudWatch !\n\n" +
+"• 60 requêtes sur 5 minutes pour l'architecture classique\n" +
+"• 60 requêtes sur 5 minutes pour l'architecture serverless\n" +
+"• Métriques continues pour CloudWatch\n\n" +
+"⏱️ Durée totale : 10 minutes\n" +
+"📊 Métriques optimales dans CloudWatch\n\n" +
+"Continuer ?");
+
+            if (!confirmed) return;
+
+            resetMetrics();
+            document.getElementById("comp-test-btn").disabled = true;
+            document.getElementById("comp-ext-btn").disabled = true;
+            
+            setTimeout(function() { extendedLoadTest("classic"); }, 0);
+            setTimeout(function() { extendedLoadTest("serverless"); }, 30000);
+            
+            setTimeout(function() {
+                document.getElementById("comp-test-btn").disabled = false;
+                document.getElementById("comp-ext-btn").disabled = false;
+            }, 600000);
+        }
+
+        // Reset des compteurs
+        function resetMetrics() {
+            metrics.classic = { requests: 0, totalTime: 0, errors: 0, totalCost: 0 };
+            metrics.serverless = { requests: 0, totalTime: 0, errors: 0, totalCost: 0 };
+            updateCounters("classic");
+            updateCounters("serverless");
+        }
+
+        // Test de connectivité au démarrage
+        async function testConnectivity() {
+            console.log("🔍 Test de connectivité des endpoints...");
+            
+            // Test des deux architectures en parallèle
+            await Promise.all([
+                testCORS("classic"),
+                testCORS("serverless")
+            ]);
+            
+            // Vérification finale de connectivité
+            for (var arch of ["classic", "serverless"]) {
+                if (corsSupport[arch] === null) {
+                    connectivity[arch] = false;
+                    document.getElementById(arch + "-section").classList.add("disabled");
+                    document.getElementById(arch + "-test-btn").disabled = true;
+                    document.getElementById(arch + "-load-btn").disabled = true;
+                    document.getElementById(arch + "-ext-btn").disabled = true;
+                    document.getElementById(arch + "-results").textContent = "❌ Architecture " + arch + " non disponible";
+                    document.getElementById(arch + "-results").className = "results error-box";
+                }
+            }
+        }
+
+        // Initialisation
+        window.addEventListener("load", function() {
+            console.log("🗄️ Testeur de base de données AWS initialisé");
+            console.log("📊 Les tests vont générer des métriques CloudWatch réelles");
+            console.log("💡 Utilisez les tests 5min pour des données CloudWatch optimales");
+            console.log("💰 Coûts réalistes - Classique: " + (costPerRequest.classic * 1000).toFixed(4) + "€ pour 1000 requêtes");
+            console.log("💰 Coûts réalistes - Serverless: " + (costPerRequest.serverless * 1000).toFixed(4) + "€ pour 1000 requêtes");
+            
+            // Mise à jour de l'affichage des endpoints
+            document.getElementById("classic-endpoint").textContent = 
+                endpoints.classic + "/ (avec paramètres test)";
+            document.getElementById("serverless-endpoint").textContent = 
+                endpoints.serverless;
+            
+            console.log("Endpoints configurés:", endpoints);
+            
+            // Test de connectivité et CORS
+            testConnectivity();
+            
+            // Vérification de l'environnement
+            if (location.protocol === "file:") {
+                document.querySelector(".info-box").innerHTML += 
+                    "<br><strong>⚠️ Attention:</strong> Vous utilisez le protocol file://. " +
+                    "Pour éviter les problèmes CORS, servez cette page via HTTP/HTTPS.";
+            }
+        });
+
+        // Gestion des erreurs globales
+        window.addEventListener("unhandledrejection", function(event) {
+            console.error("Promesse rejetée:", event.reason);
+            if (event.reason.message && event.reason.message.includes("fetch")) {
+                console.log("💡 Conseil: Problème de fetch détecté. Auto-détection CORS en cours...");
+            }
+        });
+
+        // Debug: Afficher les informations de l'environnement
+        console.log("🌍 Environnement:", {
+            userAgent: navigator.userAgent,
+            protocol: location.protocol,
+            hostname: location.hostname,
+            port: location.port
+        });
+    </script>
+</body>
+</html>

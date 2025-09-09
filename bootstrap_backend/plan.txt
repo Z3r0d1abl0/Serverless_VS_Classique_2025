@@ -1,0 +1,24 @@
+[0m[1mmodule.iam_roles.data.aws_caller_identity.current: Reading...[0m[0m
+[0m[1maws_dynamodb_table.state_lock: Refreshing state... [id=tfstate-locks][0m
+[0m[1mdata.aws_caller_identity.current: Reading...[0m[0m
+[0m[1maws_s3_bucket.tfstate: Refreshing state... [id=my-s3-shared-backend-s-vs-c-2025][0m
+[0m[1mmodule.iam_roles.aws_iam_role.lambda_role: Refreshing state... [id=shared-lambda-exec-role][0m
+[0m[1mmodule.iam_roles.data.aws_caller_identity.current: Read complete after 0s [id=367101965993][0m
+[0m[1mmodule.iam_roles.aws_iam_role.terraform_backend_role: Refreshing state... [id=shared-terraform-backend-role][0m
+[0m[1mdata.aws_caller_identity.current: Read complete after 0s [id=367101965993][0m
+[0m[1mdata.aws_iam_session_context.current: Reading...[0m[0m
+[0m[1mdata.aws_iam_session_context.current: Read complete after 0s [id=arn:aws:iam::367101965993:user/Z3r0d1ablo][0m
+[0m[1maws_kms_key.tfstate: Refreshing state... [id=3e949c74-a931-4463-8d7b-c8c749b9befd][0m
+[0m[1maws_kms_alias.tfstate: Refreshing state... [id=alias/tfstate-backend][0m
+[0m[1maws_s3_bucket_versioning.tfstate: Refreshing state... [id=my-s3-shared-backend-s-vs-c-2025][0m
+[0m[1mdata.aws_iam_policy_document.tfstate_bucket: Reading...[0m[0m
+[0m[1maws_s3_bucket_server_side_encryption_configuration.tfstate: Refreshing state... [id=my-s3-shared-backend-s-vs-c-2025][0m
+[0m[1maws_s3_bucket_public_access_block.tfstate: Refreshing state... [id=my-s3-shared-backend-s-vs-c-2025][0m
+[0m[1mdata.aws_iam_policy_document.tfstate_bucket: Read complete after 0s [id=1583250089][0m
+[0m[1maws_s3_bucket_policy.tfstate: Refreshing state... [id=my-s3-shared-backend-s-vs-c-2025][0m
+[0m[1mmodule.iam_roles.aws_iam_role_policy_attachment.lambda_logs: Refreshing state... [id=shared-lambda-exec-role-20250811182158563500000001][0m
+
+[0m[1m[32mNo changes.[0m[1m Your infrastructure matches the configuration.[0m
+
+[0mTerraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.

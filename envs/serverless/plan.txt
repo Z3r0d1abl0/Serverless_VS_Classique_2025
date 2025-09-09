@@ -1,0 +1,65 @@
+[0m[1mdata.terraform_remote_state.shared: Reading...[0m[0m
+[0m[1mrandom_pet.s3_bucket_suffix: Refreshing state... [id=aware-burro][0m
+[0m[1mdata.terraform_remote_state.shared: Read complete after 1s[0m
+[0m[1mmodule.subnet.aws_route_table.public["b"]: Refreshing state... [id=rtb-060f775f5b749dc66][0m
+[0m[1mmodule.subnet.aws_subnet.private["b"]: Refreshing state... [id=subnet-04a77183a6bca9cc8][0m
+[0m[1mmodule.subnet.aws_subnet.public["b"]: Refreshing state... [id=subnet-0174d738e1a798cd6][0m
+[0m[1mmodule.subnet.aws_subnet.private["a"]: Refreshing state... [id=subnet-0e43b3de13ede17be][0m
+[0m[1mmodule.iam_roles_lambda.aws_iam_role.lambda_role: Refreshing state... [id=serverless-lambda-exec-role][0m
+[0m[1mmodule.subnet.aws_subnet.public["a"]: Refreshing state... [id=subnet-0f52b5ef9ba006ce6][0m
+[0m[1mdata.aws_route53_zone.main: Reading...[0m[0m
+[0m[1mmodule.s3_website.aws_s3_bucket.website: Refreshing state... [id=web-serverless-erwan-aware-burro][0m
+[0m[1mmodule.iam_roles_lambda.data.aws_caller_identity.current: Reading...[0m[0m
+[0m[1mmodule.iam_roles_lambda.data.aws_caller_identity.current: Read complete after 0s [id=367101965993][0m
+[0m[1mmodule.security_groups.aws_security_group.alb: Refreshing state... [id=sg-035fd23ec1819417f][0m
+[0m[1mdata.aws_secretsmanager_secret.db_serverless: Reading...[0m[0m
+[0m[1maws_cloudfront_origin_access_identity.main: Refreshing state... [id=E32PQOSK2MQBDK][0m
+[0m[1mmodule.lambda_api_gateway.aws_apigatewayv2_api.api: Refreshing state... [id=hidjxxb6yd][0m
+[0m[1mmodule.security_groups.aws_security_group.lambda_sg: Refreshing state... [id=sg-0e29bc5fe3694d0f8][0m
+[0m[1mmodule.subnet.aws_route_table.public["a"]: Refreshing state... [id=rtb-05cd27b02aab06dfb][0m
+[0m[1mmodule.iam_roles_lambda.aws_iam_role.terraform_backend_role: Refreshing state... [id=serverless-terraform-backend-role][0m
+[0m[1mmodule.security_groups.aws_security_group.sc: Refreshing state... [id=sg-02748bc214582d094][0m
+[0m[1mdata.aws_secretsmanager_secret.db_serverless: Read complete after 0s [id=arn:aws:secretsmanager:eu-west-3:367101965993:secret:db-secret-serverless-artistic-pelican-pCEisv][0m
+[0m[1mmodule.subnet.aws_route_table.private["b"]: Refreshing state... [id=rtb-0f4098670b734a1ed][0m
+[0m[1mmodule.subnet.aws_route_table.private["a"]: Refreshing state... [id=rtb-00ccc490214f1e2c2][0m
+[0m[1mdata.aws_secretsmanager_secret_version.db_serverless: Reading...[0m[0m
+[0m[1mmodule.security_groups.aws_security_group.aurora: Refreshing state... [id=sg-024072dbaee6e006c][0m
+[0m[1mmodule.security_groups.aws_security_group.vpce: Refreshing state... [id=sg-0dd71de5ea8ff3e27][0m
+[0m[1mdata.aws_secretsmanager_secret_version.db_serverless: Read complete after 0s [id=arn:aws:secretsmanager:eu-west-3:367101965993:secret:db-secret-serverless-artistic-pelican-pCEisv|AWSCURRENT][0m
+[0m[1mmodule.security_groups.aws_security_group.rds_sg: Refreshing state... [id=sg-05035991ad8999f24][0m
+[0m[1mmodule.subnet.aws_route_table_association.public["a"]: Refreshing state... [id=rtbassoc-01e0933fe388dd84a][0m
+[0m[1mmodule.subnet.aws_route_table_association.public["b"]: Refreshing state... [id=rtbassoc-0a9c00cf933e7d1e1][0m
+[0m[1mmodule.aurora_serverless.aws_db_subnet_group.aurora: Refreshing state... [id=serverless-aurora-subnet-group][0m
+[0m[1mmodule.s3_website.aws_s3_object.index_html: Refreshing state... [id=index.html][0m
+[0m[1mmodule.s3_website.aws_s3_bucket_cors_configuration.website: Refreshing state... [id=web-serverless-erwan-aware-burro][0m
+[0m[1mmodule.s3_website.aws_s3_bucket_public_access_block.website: Refreshing state... [id=web-serverless-erwan-aware-burro][0m
+[0m[1mmodule.s3_website.aws_s3_bucket_website_configuration.website: Refreshing state... [id=web-serverless-erwan-aware-burro][0m
+[0m[1mmodule.s3_website.aws_s3_object.error_html: Refreshing state... [id=error.html][0m
+[0m[1mmodule.lambda_api_gateway.aws_apigatewayv2_stage.stage: Refreshing state... [id=$default][0m
+[0m[1mmodule.subnet.aws_route_table_association.private["a"]: Refreshing state... [id=rtbassoc-0559a22fc9a7c28c6][0m
+[0m[1mmodule.subnet.aws_route_table_association.private["b"]: Refreshing state... [id=rtbassoc-02edc6a31e8a1aec1][0m
+[0m[1mdata.aws_route53_zone.main: Read complete after 0s [id=Z0264972SONOTDE4YLM][0m
+[0m[1mmodule.vpc_endpoints.aws_vpc_endpoint.s3: Refreshing state... [id=vpce-096401442779b4763][0m
+[0m[1mmodule.vpc_endpoints.aws_vpc_endpoint.cloudwatch_logs: Refreshing state... [id=vpce-014652312899c987b][0m
+[0m[1mmodule.vpc_endpoints.aws_vpc_endpoint.kms: Refreshing state... [id=vpce-09d30bffcf3e76e29][0m
+[0m[1mmodule.vpc_endpoints.aws_vpc_endpoint.secretsmanager: Refreshing state... [id=vpce-0180ffdd9c35c97de][0m
+[0m[1mmodule.aurora_serverless.aws_rds_cluster.aurora: Refreshing state... [id=serverless-aurora][0m
+[0m[1mmodule.s3_website.data.aws_iam_policy_document.cloudfront_access: Reading...[0m[0m
+[0m[1mmodule.s3_website.data.aws_iam_policy_document.cloudfront_access: Read complete after 0s [id=1114395628][0m
+[0m[1mmodule.s3_website.aws_s3_bucket_policy.cloudfront_access: Refreshing state... [id=web-serverless-erwan-aware-burro][0m
+[0m[1mmodule.iam_roles_lambda.aws_iam_role_policy_attachment.lambda_vpc: Refreshing state... [id=serverless-lambda-exec-role-20250813184150515100000001][0m
+[0m[1mmodule.iam_roles_lambda.aws_iam_role_policy_attachment.lambda_logs: Refreshing state... [id=serverless-lambda-exec-role-20250813181353099000000003][0m
+[0m[1mmodule.lambda_api_gateway.aws_lambda_function.main: Refreshing state... [id=serverless-lambda-aurora][0m
+[0m[1mmodule.aurora_serverless.aws_rds_cluster_instance.aurora[1]: Refreshing state... [id=serverless-aurora-2][0m
+[0m[1mmodule.aurora_serverless.aws_rds_cluster_instance.aurora[0]: Refreshing state... [id=serverless-aurora-1][0m
+[0m[1mmodule.lambda_api_gateway.aws_apigatewayv2_integration.lambda_integration: Refreshing state... [id=2di0bb7][0m
+[0m[1mmodule.lambda_api_gateway.aws_lambda_permission.api_gw: Refreshing state... [id=AllowAPIGatewayInvoke][0m
+[0m[1mmodule.lambda_api_gateway.aws_apigatewayv2_route.route: Refreshing state... [id=l88vmb2][0m
+[0m[1mmodule.waf_cloudfront.aws_wafv2_web_acl.this: Refreshing state... [id=dbff5047-03e3-4fe3-aa9a-632a507b0539][0m
+[0m[1mmodule.cloudfront.aws_cloudfront_distribution.this: Refreshing state... [id=E1WXYIZE4Y1GNI][0m
+[0m[1mmodule.route_53_record_serverless.aws_route53_record.this: Refreshing state... [id=Z0264972SONOTDE4YLM_serverless_A][0m
+
+[0m[1m[32mNo changes.[0m[1m Your infrastructure matches the configuration.[0m
+
+[0mTerraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.

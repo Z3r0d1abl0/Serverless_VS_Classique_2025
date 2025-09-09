@@ -1,0 +1,1175 @@
+[0m[1mdata.terraform_remote_state.shared: Reading...[0m[0m
+[0m[1mdata.aws_route53_zone.main: Reading...[0m[0m
+[0m[1mdata.terraform_remote_state.shared: Read complete after 0s[0m
+[0m[1mdata.aws_secretsmanager_secret.db_classique: Reading...[0m[0m
+[0m[1mdata.aws_secretsmanager_secret.db_classique: Read complete after 0s [id=arn:aws:secretsmanager:eu-west-3:367101965993:secret:db-secret-classique-engaged-cattle-r5sbZ3][0m
+[0m[1mdata.aws_secretsmanager_secret_version.db_classique: Reading...[0m[0m
+[0m[1mdata.aws_secretsmanager_secret_version.db_classique: Read complete after 0s [id=arn:aws:secretsmanager:eu-west-3:367101965993:secret:db-secret-classique-engaged-cattle-r5sbZ3|AWSCURRENT][0m
+[0m[1mdata.aws_route53_zone.main: Read complete after 1s [id=Z0264972SONOTDE4YLM][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+
+Terraform will perform the following actions:
+
+[1m  # module.alb.aws_lb.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_lb" "this" {
+      [32m+[0m[0m arn                                                          = (known after apply)
+      [32m+[0m[0m arn_suffix                                                   = (known after apply)
+      [32m+[0m[0m client_keep_alive                                            = 3600
+      [32m+[0m[0m desync_mitigation_mode                                       = "defensive"
+      [32m+[0m[0m dns_name                                                     = (known after apply)
+      [32m+[0m[0m drop_invalid_header_fields                                   = false
+      [32m+[0m[0m enable_deletion_protection                                   = false
+      [32m+[0m[0m enable_http2                                                 = true
+      [32m+[0m[0m enable_tls_version_and_cipher_suite_headers                  = false
+      [32m+[0m[0m enable_waf_fail_open                                         = false
+      [32m+[0m[0m enable_xff_client_port                                       = false
+      [32m+[0m[0m enable_zonal_shift                                           = false
+      [32m+[0m[0m enforce_security_group_inbound_rules_on_private_link_traffic = (known after apply)
+      [32m+[0m[0m id                                                           = (known after apply)
+      [32m+[0m[0m idle_timeout                                                 = 60
+      [32m+[0m[0m internal                                                     = (known after apply)
+      [32m+[0m[0m ip_address_type                                              = (known after apply)
+      [32m+[0m[0m load_balancer_type                                           = "application"
+      [32m+[0m[0m name                                                         = "classique-alb"
+      [32m+[0m[0m name_prefix                                                  = (known after apply)
+      [32m+[0m[0m preserve_host_header                                         = false
+      [32m+[0m[0m security_groups                                              = (known after apply)
+      [32m+[0m[0m subnets                                                      = (known after apply)
+      [32m+[0m[0m tags                                                         = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-alb"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all                                                     = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-alb"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc_id                                                       = (known after apply)
+      [32m+[0m[0m xff_header_processing_mode                                   = "append"
+      [32m+[0m[0m zone_id                                                      = (known after apply)
+
+      [32m+[0m[0m subnet_mapping (known after apply)
+    }
+
+[1m  # module.alb.aws_lb_listener.http[0m will be created
+[0m  [32m+[0m[0m resource "aws_lb_listener" "http" {
+      [32m+[0m[0m arn                                                                   = (known after apply)
+      [32m+[0m[0m id                                                                    = (known after apply)
+      [32m+[0m[0m load_balancer_arn                                                     = (known after apply)
+      [32m+[0m[0m port                                                                  = 80
+      [32m+[0m[0m protocol                                                              = "HTTP"
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_header_name               = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_issuer_header_name        = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_leaf_header_name          = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_subject_header_name       = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_validity_header_name      = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_tls_cipher_suite_header_name              = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_tls_version_header_name                   = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_credentials_header_value   = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_headers_header_value       = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_methods_header_value       = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_origin_header_value        = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_expose_headers_header_value      = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_max_age_header_value             = (known after apply)
+      [32m+[0m[0m routing_http_response_content_security_policy_header_value            = (known after apply)
+      [32m+[0m[0m routing_http_response_server_enabled                                  = (known after apply)
+      [32m+[0m[0m routing_http_response_strict_transport_security_header_value          = (known after apply)
+      [32m+[0m[0m routing_http_response_x_content_type_options_header_value             = (known after apply)
+      [32m+[0m[0m routing_http_response_x_frame_options_header_value                    = (known after apply)
+      [32m+[0m[0m ssl_policy                                                            = (known after apply)
+      [32m+[0m[0m tags_all                                                              = (known after apply)
+      [32m+[0m[0m tcp_idle_timeout_seconds                                              = (known after apply)
+
+      [32m+[0m[0m default_action {
+          [32m+[0m[0m order = (known after apply)
+          [32m+[0m[0m type  = "redirect"
+
+          [32m+[0m[0m redirect {
+              [32m+[0m[0m host        = "#{host}"
+              [32m+[0m[0m path        = "/#{path}"
+              [32m+[0m[0m port        = "443"
+              [32m+[0m[0m protocol    = "HTTPS"
+              [32m+[0m[0m query       = "#{query}"
+              [32m+[0m[0m status_code = "HTTP_301"
+            }
+        }
+
+      [32m+[0m[0m mutual_authentication (known after apply)
+    }
+
+[1m  # module.alb.aws_lb_listener.https[0m will be created
+[0m  [32m+[0m[0m resource "aws_lb_listener" "https" {
+      [32m+[0m[0m arn                                                                   = (known after apply)
+      [32m+[0m[0m certificate_arn                                                       = "arn:aws:acm:eu-west-3:367101965993:certificate/0a842548-2cc2-46e6-995f-e5588468f327"
+      [32m+[0m[0m id                                                                    = (known after apply)
+      [32m+[0m[0m load_balancer_arn                                                     = (known after apply)
+      [32m+[0m[0m port                                                                  = 443
+      [32m+[0m[0m protocol                                                              = "HTTPS"
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_header_name               = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_issuer_header_name        = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_leaf_header_name          = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_subject_header_name       = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_validity_header_name      = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_tls_cipher_suite_header_name              = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_tls_version_header_name                   = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_credentials_header_value   = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_headers_header_value       = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_methods_header_value       = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_origin_header_value        = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_expose_headers_header_value      = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_max_age_header_value             = (known after apply)
+      [32m+[0m[0m routing_http_response_content_security_policy_header_value            = (known after apply)
+      [32m+[0m[0m routing_http_response_server_enabled                                  = (known after apply)
+      [32m+[0m[0m routing_http_response_strict_transport_security_header_value          = (known after apply)
+      [32m+[0m[0m routing_http_response_x_content_type_options_header_value             = (known after apply)
+      [32m+[0m[0m routing_http_response_x_frame_options_header_value                    = (known after apply)
+      [32m+[0m[0m ssl_policy                                                            = "ELBSecurityPolicy-2021-06"
+      [32m+[0m[0m tags_all                                                              = (known after apply)
+      [32m+[0m[0m tcp_idle_timeout_seconds                                              = (known after apply)
+
+      [32m+[0m[0m default_action {
+          [32m+[0m[0m order            = (known after apply)
+          [32m+[0m[0m target_group_arn = (known after apply)
+          [32m+[0m[0m type             = "forward"
+        }
+
+      [32m+[0m[0m mutual_authentication (known after apply)
+    }
+
+[1m  # module.alb.aws_lb_target_group.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_lb_target_group" "this" {
+      [32m+[0m[0m arn                                = (known after apply)
+      [32m+[0m[0m arn_suffix                         = (known after apply)
+      [32m+[0m[0m connection_termination             = (known after apply)
+      [32m+[0m[0m deregistration_delay               = "300"
+      [32m+[0m[0m id                                 = (known after apply)
+      [32m+[0m[0m ip_address_type                    = (known after apply)
+      [32m+[0m[0m lambda_multi_value_headers_enabled = false
+      [32m+[0m[0m load_balancer_arns                 = (known after apply)
+      [32m+[0m[0m load_balancing_algorithm_type      = (known after apply)
+      [32m+[0m[0m load_balancing_anomaly_mitigation  = (known after apply)
+      [32m+[0m[0m load_balancing_cross_zone_enabled  = (known after apply)
+      [32m+[0m[0m name                               = "classique-tg"
+      [32m+[0m[0m name_prefix                        = (known after apply)
+      [32m+[0m[0m port                               = 80
+      [32m+[0m[0m preserve_client_ip                 = (known after apply)
+      [32m+[0m[0m protocol                           = "HTTP"
+      [32m+[0m[0m protocol_version                   = (known after apply)
+      [32m+[0m[0m proxy_protocol_v2                  = false
+      [32m+[0m[0m slow_start                         = 0
+      [32m+[0m[0m tags                               = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-tg"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all                           = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-tg"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m target_type                        = "instance"
+      [32m+[0m[0m vpc_id                             = "vpc-0075517d3aaf9d5a8"
+
+      [32m+[0m[0m health_check {
+          [32m+[0m[0m enabled             = true
+          [32m+[0m[0m healthy_threshold   = 2
+          [32m+[0m[0m interval            = 30
+          [32m+[0m[0m matcher             = "200-399"
+          [32m+[0m[0m path                = "/"
+          [32m+[0m[0m port                = "traffic-port"
+          [32m+[0m[0m protocol            = "HTTP"
+          [32m+[0m[0m timeout             = 5
+          [32m+[0m[0m unhealthy_threshold = 2
+        }
+
+      [32m+[0m[0m stickiness (known after apply)
+
+      [32m+[0m[0m target_failover (known after apply)
+
+      [32m+[0m[0m target_group_health (known after apply)
+
+      [32m+[0m[0m target_health_state (known after apply)
+    }
+
+[1m  # module.alb.aws_wafv2_web_acl_association.alb[0m will be created
+[0m  [32m+[0m[0m resource "aws_wafv2_web_acl_association" "alb" {
+      [32m+[0m[0m id           = (known after apply)
+      [32m+[0m[0m resource_arn = (known after apply)
+      [32m+[0m[0m web_acl_arn  = (known after apply)
+    }
+
+[1m  # module.rds_classique.aws_db_instance.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_db_instance" "this" {
+      [32m+[0m[0m address                               = (known after apply)
+      [32m+[0m[0m allocated_storage                     = 20
+      [32m+[0m[0m apply_immediately                     = false
+      [32m+[0m[0m arn                                   = (known after apply)
+      [32m+[0m[0m auto_minor_version_upgrade            = true
+      [32m+[0m[0m availability_zone                     = (known after apply)
+      [32m+[0m[0m backup_retention_period               = 7
+      [32m+[0m[0m backup_target                         = (known after apply)
+      [32m+[0m[0m backup_window                         = (known after apply)
+      [32m+[0m[0m ca_cert_identifier                    = (known after apply)
+      [32m+[0m[0m character_set_name                    = (known after apply)
+      [32m+[0m[0m copy_tags_to_snapshot                 = false
+      [32m+[0m[0m database_insights_mode                = (known after apply)
+      [32m+[0m[0m db_name                               = "your_db_name"
+      [32m+[0m[0m db_subnet_group_name                  = "classique-rds-subnet-group"
+      [32m+[0m[0m dedicated_log_volume                  = false
+      [32m+[0m[0m delete_automated_backups              = true
+      [32m+[0m[0m deletion_protection                   = false
+      [32m+[0m[0m domain_fqdn                           = (known after apply)
+      [32m+[0m[0m enabled_cloudwatch_logs_exports       = [
+          [32m+[0m[0m "error",
+          [32m+[0m[0m "general",
+          [32m+[0m[0m "slowquery",
+        ]
+      [32m+[0m[0m endpoint                              = (known after apply)
+      [32m+[0m[0m engine                                = "mysql"
+      [32m+[0m[0m engine_lifecycle_support              = (known after apply)
+      [32m+[0m[0m engine_version                        = "8.0.mysql"
+      [32m+[0m[0m engine_version_actual                 = (known after apply)
+      [32m+[0m[0m hosted_zone_id                        = (known after apply)
+      [32m+[0m[0m id                                    = (known after apply)
+      [32m+[0m[0m identifier                            = "classique-rds"
+      [32m+[0m[0m identifier_prefix                     = (known after apply)
+      [32m+[0m[0m instance_class                        = "db.t3.medium"
+      [32m+[0m[0m iops                                  = (known after apply)
+      [32m+[0m[0m kms_key_id                            = (known after apply)
+      [32m+[0m[0m latest_restorable_time                = (known after apply)
+      [32m+[0m[0m license_model                         = (known after apply)
+      [32m+[0m[0m listener_endpoint                     = (known after apply)
+      [32m+[0m[0m maintenance_window                    = (known after apply)
+      [32m+[0m[0m master_user_secret                    = (known after apply)
+      [32m+[0m[0m master_user_secret_kms_key_id         = (known after apply)
+      [32m+[0m[0m monitoring_interval                   = 0
+      [32m+[0m[0m monitoring_role_arn                   = (known after apply)
+      [32m+[0m[0m multi_az                              = true
+      [32m+[0m[0m nchar_character_set_name              = (known after apply)
+      [32m+[0m[0m network_type                          = (known after apply)
+      [32m+[0m[0m option_group_name                     = (known after apply)
+      [32m+[0m[0m parameter_group_name                  = (known after apply)
+      [32m+[0m[0m password                              = (sensitive value)
+      [32m+[0m[0m password_wo                           = (write-only attribute)
+      [32m+[0m[0m performance_insights_enabled          = false
+      [32m+[0m[0m performance_insights_kms_key_id       = (known after apply)
+      [32m+[0m[0m performance_insights_retention_period = (known after apply)
+      [32m+[0m[0m port                                  = (known after apply)
+      [32m+[0m[0m publicly_accessible                   = false
+      [32m+[0m[0m replica_mode                          = (known after apply)
+      [32m+[0m[0m replicas                              = (known after apply)
+      [32m+[0m[0m resource_id                           = (known after apply)
+      [32m+[0m[0m skip_final_snapshot                   = true
+      [32m+[0m[0m snapshot_identifier                   = (known after apply)
+      [32m+[0m[0m status                                = (known after apply)
+      [32m+[0m[0m storage_throughput                    = (known after apply)
+      [32m+[0m[0m storage_type                          = (known after apply)
+      [32m+[0m[0m tags                                  = {
+          [32m+[0m[0m "Env"  = "classique"
+          [32m+[0m[0m "Name" = "classique-rds"
+        }
+      [32m+[0m[0m tags_all                              = {
+          [32m+[0m[0m "Env"  = "classique"
+          [32m+[0m[0m "Name" = "classique-rds"
+        }
+      [32m+[0m[0m timezone                              = (known after apply)
+      [32m+[0m[0m username                              = (sensitive value)
+      [32m+[0m[0m vpc_security_group_ids                = (known after apply)
+    }
+
+[1m  # module.rds_classique.aws_db_subnet_group.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_db_subnet_group" "this" {
+      [32m+[0m[0m arn                     = (known after apply)
+      [32m+[0m[0m description             = "Managed by Terraform"
+      [32m+[0m[0m id                      = (known after apply)
+      [32m+[0m[0m name                    = "classique-rds-subnet-group"
+      [32m+[0m[0m name_prefix             = (known after apply)
+      [32m+[0m[0m subnet_ids              = (known after apply)
+      [32m+[0m[0m supported_network_types = (known after apply)
+      [32m+[0m[0m tags                    = {
+          [32m+[0m[0m "Env"  = "classique"
+          [32m+[0m[0m "Name" = "classique-rds-subnet-group"
+        }
+      [32m+[0m[0m tags_all                = {
+          [32m+[0m[0m "Env"  = "classique"
+          [32m+[0m[0m "Name" = "classique-rds-subnet-group"
+        }
+      [32m+[0m[0m vpc_id                  = (known after apply)
+    }
+
+[1m  # module.route_53_record_classique.aws_route53_record.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_route53_record" "this" {
+      [32m+[0m[0m allow_overwrite = (known after apply)
+      [32m+[0m[0m fqdn            = (known after apply)
+      [32m+[0m[0m id              = (known after apply)
+      [32m+[0m[0m name            = "classique"
+      [32m+[0m[0m type            = "A"
+      [32m+[0m[0m zone_id         = "Z0264972SONOTDE4YLM"
+
+      [32m+[0m[0m alias {
+          [32m+[0m[0m evaluate_target_health = true
+          [32m+[0m[0m name                   = (known after apply)
+          [32m+[0m[0m zone_id                = (known after apply)
+        }
+    }
+
+[1m  # module.scaling_group.aws_autoscaling_group.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_autoscaling_group" "this" {
+      [32m+[0m[0m arn                              = (known after apply)
+      [32m+[0m[0m availability_zones               = (known after apply)
+      [32m+[0m[0m default_cooldown                 = (known after apply)
+      [32m+[0m[0m desired_capacity                 = 2
+      [32m+[0m[0m force_delete                     = false
+      [32m+[0m[0m force_delete_warm_pool           = false
+      [32m+[0m[0m health_check_grace_period        = 60
+      [32m+[0m[0m health_check_type                = "EC2"
+      [32m+[0m[0m id                               = (known after apply)
+      [32m+[0m[0m ignore_failed_scaling_activities = false
+      [32m+[0m[0m load_balancers                   = (known after apply)
+      [32m+[0m[0m max_size                         = 2
+      [32m+[0m[0m metrics_granularity              = "1Minute"
+      [32m+[0m[0m min_size                         = 2
+      [32m+[0m[0m name                             = "classique-scaling-group"
+      [32m+[0m[0m name_prefix                      = (known after apply)
+      [32m+[0m[0m predicted_capacity               = (known after apply)
+      [32m+[0m[0m protect_from_scale_in            = false
+      [32m+[0m[0m service_linked_role_arn          = (known after apply)
+      [32m+[0m[0m target_group_arns                = (known after apply)
+      [32m+[0m[0m vpc_zone_identifier              = (known after apply)
+      [32m+[0m[0m wait_for_capacity_timeout        = "10m"
+      [32m+[0m[0m warm_pool_size                   = (known after apply)
+
+      [32m+[0m[0m availability_zone_distribution (known after apply)
+
+      [32m+[0m[0m capacity_reservation_specification (known after apply)
+
+      [32m+[0m[0m launch_template {
+          [32m+[0m[0m id      = (known after apply)
+          [32m+[0m[0m name    = (known after apply)
+          [32m+[0m[0m version = (known after apply)
+        }
+
+      [32m+[0m[0m mixed_instances_policy (known after apply)
+
+      [32m+[0m[0m tag {
+          [32m+[0m[0m key                 = "Environment"
+          [32m+[0m[0m propagate_at_launch = true
+          [32m+[0m[0m value               = "classique"
+        }
+      [32m+[0m[0m tag {
+          [32m+[0m[0m key                 = "Name"
+          [32m+[0m[0m propagate_at_launch = true
+          [32m+[0m[0m value               = "classique-scaling-group"
+        }
+      [32m+[0m[0m tag {
+          [32m+[0m[0m key                 = "Project"
+          [32m+[0m[0m propagate_at_launch = true
+          [32m+[0m[0m value               = "S_Vs_C_2025"
+        }
+
+      [32m+[0m[0m traffic_source (known after apply)
+    }
+
+[1m  # module.scaling_group.aws_launch_template.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_launch_template" "this" {
+      [32m+[0m[0m arn                    = (known after apply)
+      [32m+[0m[0m default_version        = (known after apply)
+      [32m+[0m[0m id                     = (known after apply)
+      [32m+[0m[0m image_id               = "ami-09a80c0b7e1d0e74e"
+      [32m+[0m[0m instance_type          = "t2.micro"
+      [32m+[0m[0m latest_version         = (known after apply)
+      [32m+[0m[0m name                   = (known after apply)
+      [32m+[0m[0m name_prefix            = "classique-scaling-group"
+      [32m+[0m[0m tags_all               = (known after apply)
+      [32m+[0m[0m user_data              = "ICAjIS9iaW4vYmFzaAp5dW0gdXBkYXRlIC15CmFtYXpvbi1saW51eC1leHRyYXMgaW5zdGFsbCBuZ2lueDEgLXkKc3lzdGVtY3RsIGVuYWJsZSBuZ2lueApzeXN0ZW1jdGwgc3RhcnQgbmdpbngKY2F0IDw8J0VPUEFHRScgPiAvdXNyL3NoYXJlL25naW54L2h0bWwvaW5kZXguaHRtbAo8IURPQ1RZUEUgaHRtbD4KPGh0bWwgbGFuZz0iZnIiPgo8aGVhZD4KICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KICAgIDx0aXRsZT5IZWxsbyBXb3JsZCBDbG91ZDwvdGl0bGU+CiAgICA8c3R5bGU+CiAgICAgICAgYm9keSB7IGZvbnQtZmFtaWx5OiBBcmlhbCwgc2Fucy1zZXJpZjsgYmFja2dyb3VuZDogI2Y4ZjlmYTsgdGV4dC1hbGlnbjogY2VudGVyOyBtYXJnaW4tdG9wOiAxMDBweDt9CiAgICAgICAgaDEgICB7IGNvbG9yOiAjMDA3YmZjOyB9CiAgICAgICAgLmVudiB7IG1hcmdpbi10b3A6IDMwcHg7IGNvbG9yOiAjNDQ0OyB9CiAgICA8L3N0eWxlPgo8L2hlYWQ+Cjxib2R5PgogICAgPGgxPkhlbGxvLCBXb3JsZCAhPC9oMT4KICAgIDxkaXYgY2xhc3M9ImVudiI+CiAgICAgICAgPHA+Q2Ugc2l0ZSBlc3Qgc2VydmkgcGFyIDxiPkVDMiArIE5naW54PC9iPi48L3A+CiAgICAgICAgPHA+VGVzdCBkZSBkaXNwb25pYmlsaXTDqSByw6l1c3NpZS48L3A+CiAgICAgICAgPHA+Tm9tIGQnaMO0dGUgOiAkKGhvc3RuYW1lKTwvcD4KICAgIDwvZGl2Pgo8L2JvZHk+CjwvaHRtbD4KRU9QQUdFCg=="
+      [32m+[0m[0m vpc_security_group_ids = (known after apply)
+
+      [32m+[0m[0m block_device_mappings {
+          [32m+[0m[0m device_name = "/dev/xvda"
+
+          [32m+[0m[0m ebs {
+              [32m+[0m[0m delete_on_termination      = "true"
+              [32m+[0m[0m iops                       = (known after apply)
+              [32m+[0m[0m throughput                 = (known after apply)
+              [32m+[0m[0m volume_initialization_rate = (known after apply)
+              [32m+[0m[0m volume_size                = 8
+              [32m+[0m[0m volume_type                = "gp2"
+            }
+        }
+
+      [32m+[0m[0m metadata_options (known after apply)
+
+      [32m+[0m[0m tag_specifications {
+          [32m+[0m[0m resource_type = "instance"
+          [32m+[0m[0m tags          = {
+              [32m+[0m[0m "Environment" = "classique"
+              [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+            }
+        }
+    }
+
+[1m  # module.security_groups.aws_security_group.alb[0m will be created
+[0m  [32m+[0m[0m resource "aws_security_group" "alb" {
+      [32m+[0m[0m arn                    = (known after apply)
+      [32m+[0m[0m description            = "Security Group for ALB"
+      [32m+[0m[0m egress                 = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "0.0.0.0/0",
+                ]
+              [32m+[0m[0m from_port        = 0
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "-1"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 0
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+        ]
+      [32m+[0m[0m id                     = (known after apply)
+      [32m+[0m[0m ingress                = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "0.0.0.0/0",
+                ]
+              [32m+[0m[0m from_port        = 443
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "tcp"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 443
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "0.0.0.0/0",
+                ]
+              [32m+[0m[0m from_port        = 80
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "tcp"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 80
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+        ]
+      [32m+[0m[0m name                   = "classique-alb-sg"
+      [32m+[0m[0m name_prefix            = (known after apply)
+      [32m+[0m[0m owner_id               = (known after apply)
+      [32m+[0m[0m revoke_rules_on_delete = false
+      [32m+[0m[0m tags                   = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all               = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc_id                 = "vpc-0075517d3aaf9d5a8"
+    }
+
+[1m  # module.security_groups.aws_security_group.aurora[0m will be created
+[0m  [32m+[0m[0m resource "aws_security_group" "aurora" {
+      [32m+[0m[0m arn                    = (known after apply)
+      [32m+[0m[0m description            = "SG pour Aurora MySQL Serverless"
+      [32m+[0m[0m egress                 = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "0.0.0.0/0",
+                ]
+              [32m+[0m[0m description      = "All outbound"
+              [32m+[0m[0m from_port        = 0
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "-1"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 0
+            },
+        ]
+      [32m+[0m[0m id                     = (known after apply)
+      [32m+[0m[0m ingress                = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = []
+              [32m+[0m[0m description      = "MySQL depuis Lambda"
+              [32m+[0m[0m from_port        = 3306
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "tcp"
+              [32m+[0m[0m security_groups  = (known after apply)
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 3306
+            },
+        ]
+      [32m+[0m[0m name                   = "classique-aurora-sg"
+      [32m+[0m[0m name_prefix            = (known after apply)
+      [32m+[0m[0m owner_id               = (known after apply)
+      [32m+[0m[0m revoke_rules_on_delete = false
+      [32m+[0m[0m tags                   = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-aurora-sg"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all               = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-aurora-sg"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc_id                 = "vpc-0075517d3aaf9d5a8"
+    }
+
+[1m  # module.security_groups.aws_security_group.lambda_sg[0m will be created
+[0m  [32m+[0m[0m resource "aws_security_group" "lambda_sg" {
+      [32m+[0m[0m arn                    = (known after apply)
+      [32m+[0m[0m description            = "SG pour Lambda serverless"
+      [32m+[0m[0m egress                 = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "10.0.0.0/16",
+                ]
+              [32m+[0m[0m description      = "HTTPS vers VPC Endpoints dans le VPC"
+              [32m+[0m[0m from_port        = 443
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "tcp"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 443
+            },
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "10.0.0.0/16",
+                ]
+              [32m+[0m[0m description      = "MySQL vers Aurora"
+              [32m+[0m[0m from_port        = 3306
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "tcp"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 3306
+            },
+        ]
+      [32m+[0m[0m id                     = (known after apply)
+      [32m+[0m[0m ingress                = (known after apply)
+      [32m+[0m[0m name                   = "classique-lambda-sg"
+      [32m+[0m[0m name_prefix            = (known after apply)
+      [32m+[0m[0m owner_id               = (known after apply)
+      [32m+[0m[0m revoke_rules_on_delete = false
+      [32m+[0m[0m tags                   = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-lambda-sg"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all               = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-lambda-sg"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc_id                 = "vpc-0075517d3aaf9d5a8"
+    }
+
+[1m  # module.security_groups.aws_security_group.rds_sg[0m will be created
+[0m  [32m+[0m[0m resource "aws_security_group" "rds_sg" {
+      [32m+[0m[0m arn                    = (known after apply)
+      [32m+[0m[0m description            = "SG for RDS MySQL - only from EC2 web"
+      [32m+[0m[0m egress                 = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "0.0.0.0/0",
+                ]
+              [32m+[0m[0m description      = "All outbound"
+              [32m+[0m[0m from_port        = 0
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "-1"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 0
+            },
+        ]
+      [32m+[0m[0m id                     = (known after apply)
+      [32m+[0m[0m ingress                = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = []
+              [32m+[0m[0m description      = "MySQL from Scaling Group"
+              [32m+[0m[0m from_port        = 3306
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "tcp"
+              [32m+[0m[0m security_groups  = (known after apply)
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 3306
+            },
+        ]
+      [32m+[0m[0m name                   = "classique-rds-sg"
+      [32m+[0m[0m name_prefix            = (known after apply)
+      [32m+[0m[0m owner_id               = (known after apply)
+      [32m+[0m[0m revoke_rules_on_delete = false
+      [32m+[0m[0m tags                   = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-rds-sg"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all               = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-rds-sg"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc_id                 = "vpc-0075517d3aaf9d5a8"
+    }
+
+[1m  # module.security_groups.aws_security_group.sc[0m will be created
+[0m  [32m+[0m[0m resource "aws_security_group" "sc" {
+      [32m+[0m[0m arn                    = (known after apply)
+      [32m+[0m[0m description            = "Security Group for EC2 instances in ASG"
+      [32m+[0m[0m egress                 = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "0.0.0.0/0",
+                ]
+              [32m+[0m[0m from_port        = 0
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "-1"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 0
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+        ]
+      [32m+[0m[0m id                     = (known after apply)
+      [32m+[0m[0m ingress                = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = []
+              [32m+[0m[0m description      = "Allow HTTP from ALB"
+              [32m+[0m[0m from_port        = 80
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "tcp"
+              [32m+[0m[0m security_groups  = (known after apply)
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 80
+            },
+        ]
+      [32m+[0m[0m name                   = "classique-sc-sg"
+      [32m+[0m[0m name_prefix            = (known after apply)
+      [32m+[0m[0m owner_id               = (known after apply)
+      [32m+[0m[0m revoke_rules_on_delete = false
+      [32m+[0m[0m tags                   = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all               = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc_id                 = "vpc-0075517d3aaf9d5a8"
+    }
+
+[1m  # module.security_groups.aws_security_group.vpce[0m will be created
+[0m  [32m+[0m[0m resource "aws_security_group" "vpce" {
+      [32m+[0m[0m arn                    = (known after apply)
+      [32m+[0m[0m description            = "SG pour les VPC Endpoints privés (SecretsManager, KMS, CloudWatch Logs)"
+      [32m+[0m[0m egress                 = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "0.0.0.0/0",
+                ]
+              [32m+[0m[0m description      = "All outbound"
+              [32m+[0m[0m from_port        = 0
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "-1"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 0
+            },
+        ]
+      [32m+[0m[0m id                     = (known after apply)
+      [32m+[0m[0m ingress                = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = []
+              [32m+[0m[0m description      = "HTTPS depuis Lambda"
+              [32m+[0m[0m from_port        = 443
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "tcp"
+              [32m+[0m[0m security_groups  = (known after apply)
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 443
+            },
+        ]
+      [32m+[0m[0m name                   = "classique-vpce-sg"
+      [32m+[0m[0m name_prefix            = (known after apply)
+      [32m+[0m[0m owner_id               = (known after apply)
+      [32m+[0m[0m revoke_rules_on_delete = false
+      [32m+[0m[0m tags                   = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-vpce-sg"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all               = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-vpce-sg"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc_id                 = "vpc-0075517d3aaf9d5a8"
+    }
+
+[1m  # module.subnet_classique.aws_eip.nat["c"][0m will be created
+[0m  [32m+[0m[0m resource "aws_eip" "nat" {
+      [32m+[0m[0m allocation_id        = (known after apply)
+      [32m+[0m[0m arn                  = (known after apply)
+      [32m+[0m[0m association_id       = (known after apply)
+      [32m+[0m[0m carrier_ip           = (known after apply)
+      [32m+[0m[0m customer_owned_ip    = (known after apply)
+      [32m+[0m[0m domain               = "vpc"
+      [32m+[0m[0m id                   = (known after apply)
+      [32m+[0m[0m instance             = (known after apply)
+      [32m+[0m[0m ipam_pool_id         = (known after apply)
+      [32m+[0m[0m network_border_group = (known after apply)
+      [32m+[0m[0m network_interface    = (known after apply)
+      [32m+[0m[0m private_dns          = (known after apply)
+      [32m+[0m[0m private_ip           = (known after apply)
+      [32m+[0m[0m ptr_record           = (known after apply)
+      [32m+[0m[0m public_dns           = (known after apply)
+      [32m+[0m[0m public_ip            = (known after apply)
+      [32m+[0m[0m public_ipv4_pool     = (known after apply)
+      [32m+[0m[0m tags                 = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-eip-nat-c"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all             = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-eip-nat-c"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc                  = (known after apply)
+    }
+
+[1m  # module.subnet_classique.aws_eip.nat["d"][0m will be created
+[0m  [32m+[0m[0m resource "aws_eip" "nat" {
+      [32m+[0m[0m allocation_id        = (known after apply)
+      [32m+[0m[0m arn                  = (known after apply)
+      [32m+[0m[0m association_id       = (known after apply)
+      [32m+[0m[0m carrier_ip           = (known after apply)
+      [32m+[0m[0m customer_owned_ip    = (known after apply)
+      [32m+[0m[0m domain               = "vpc"
+      [32m+[0m[0m id                   = (known after apply)
+      [32m+[0m[0m instance             = (known after apply)
+      [32m+[0m[0m ipam_pool_id         = (known after apply)
+      [32m+[0m[0m network_border_group = (known after apply)
+      [32m+[0m[0m network_interface    = (known after apply)
+      [32m+[0m[0m private_dns          = (known after apply)
+      [32m+[0m[0m private_ip           = (known after apply)
+      [32m+[0m[0m ptr_record           = (known after apply)
+      [32m+[0m[0m public_dns           = (known after apply)
+      [32m+[0m[0m public_ip            = (known after apply)
+      [32m+[0m[0m public_ipv4_pool     = (known after apply)
+      [32m+[0m[0m tags                 = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-eip-nat-d"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all             = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-eip-nat-d"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc                  = (known after apply)
+    }
+
+[1m  # module.subnet_classique.aws_nat_gateway.nat["c"][0m will be created
+[0m  [32m+[0m[0m resource "aws_nat_gateway" "nat" {
+      [32m+[0m[0m allocation_id                      = (known after apply)
+      [32m+[0m[0m association_id                     = (known after apply)
+      [32m+[0m[0m connectivity_type                  = "public"
+      [32m+[0m[0m id                                 = (known after apply)
+      [32m+[0m[0m network_interface_id               = (known after apply)
+      [32m+[0m[0m private_ip                         = (known after apply)
+      [32m+[0m[0m public_ip                          = (known after apply)
+      [32m+[0m[0m secondary_private_ip_address_count = (known after apply)
+      [32m+[0m[0m secondary_private_ip_addresses     = (known after apply)
+      [32m+[0m[0m subnet_id                          = (known after apply)
+      [32m+[0m[0m tags                               = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-nat-c"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all                           = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-nat-c"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+    }
+
+[1m  # module.subnet_classique.aws_nat_gateway.nat["d"][0m will be created
+[0m  [32m+[0m[0m resource "aws_nat_gateway" "nat" {
+      [32m+[0m[0m allocation_id                      = (known after apply)
+      [32m+[0m[0m association_id                     = (known after apply)
+      [32m+[0m[0m connectivity_type                  = "public"
+      [32m+[0m[0m id                                 = (known after apply)
+      [32m+[0m[0m network_interface_id               = (known after apply)
+      [32m+[0m[0m private_ip                         = (known after apply)
+      [32m+[0m[0m public_ip                          = (known after apply)
+      [32m+[0m[0m secondary_private_ip_address_count = (known after apply)
+      [32m+[0m[0m secondary_private_ip_addresses     = (known after apply)
+      [32m+[0m[0m subnet_id                          = (known after apply)
+      [32m+[0m[0m tags                               = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-nat-d"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all                           = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-nat-d"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+    }
+
+[1m  # module.subnet_classique.aws_route_table.private["c"][0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table" "private" {
+      [32m+[0m[0m arn              = (known after apply)
+      [32m+[0m[0m id               = (known after apply)
+      [32m+[0m[0m owner_id         = (known after apply)
+      [32m+[0m[0m propagating_vgws = (known after apply)
+      [32m+[0m[0m route            = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_block                 = "0.0.0.0/0"
+              [32m+[0m[0m nat_gateway_id             = (known after apply)
+                [90m# (11 unchanged attributes hidden)[0m[0m
+            },
+        ]
+      [32m+[0m[0m tags             = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-rt-private-c"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all         = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-rt-private-c"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc_id           = "vpc-0075517d3aaf9d5a8"
+    }
+
+[1m  # module.subnet_classique.aws_route_table.private["d"][0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table" "private" {
+      [32m+[0m[0m arn              = (known after apply)
+      [32m+[0m[0m id               = (known after apply)
+      [32m+[0m[0m owner_id         = (known after apply)
+      [32m+[0m[0m propagating_vgws = (known after apply)
+      [32m+[0m[0m route            = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_block                 = "0.0.0.0/0"
+              [32m+[0m[0m nat_gateway_id             = (known after apply)
+                [90m# (11 unchanged attributes hidden)[0m[0m
+            },
+        ]
+      [32m+[0m[0m tags             = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-rt-private-d"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all         = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-rt-private-d"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc_id           = "vpc-0075517d3aaf9d5a8"
+    }
+
+[1m  # module.subnet_classique.aws_route_table.public["c"][0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table" "public" {
+      [32m+[0m[0m arn              = (known after apply)
+      [32m+[0m[0m id               = (known after apply)
+      [32m+[0m[0m owner_id         = (known after apply)
+      [32m+[0m[0m propagating_vgws = (known after apply)
+      [32m+[0m[0m route            = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_block                 = "0.0.0.0/0"
+              [32m+[0m[0m gateway_id                 = "igw-0cee415b54a09b98e"
+                [90m# (11 unchanged attributes hidden)[0m[0m
+            },
+        ]
+      [32m+[0m[0m tags             = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-rt-public-c"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all         = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-rt-public-c"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc_id           = "vpc-0075517d3aaf9d5a8"
+    }
+
+[1m  # module.subnet_classique.aws_route_table.public["d"][0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table" "public" {
+      [32m+[0m[0m arn              = (known after apply)
+      [32m+[0m[0m id               = (known after apply)
+      [32m+[0m[0m owner_id         = (known after apply)
+      [32m+[0m[0m propagating_vgws = (known after apply)
+      [32m+[0m[0m route            = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_block                 = "0.0.0.0/0"
+              [32m+[0m[0m gateway_id                 = "igw-0cee415b54a09b98e"
+                [90m# (11 unchanged attributes hidden)[0m[0m
+            },
+        ]
+      [32m+[0m[0m tags             = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-rt-public-d"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all         = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-rt-public-d"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc_id           = "vpc-0075517d3aaf9d5a8"
+    }
+
+[1m  # module.subnet_classique.aws_route_table_association.private["c"][0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table_association" "private" {
+      [32m+[0m[0m id             = (known after apply)
+      [32m+[0m[0m route_table_id = (known after apply)
+      [32m+[0m[0m subnet_id      = (known after apply)
+    }
+
+[1m  # module.subnet_classique.aws_route_table_association.private["d"][0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table_association" "private" {
+      [32m+[0m[0m id             = (known after apply)
+      [32m+[0m[0m route_table_id = (known after apply)
+      [32m+[0m[0m subnet_id      = (known after apply)
+    }
+
+[1m  # module.subnet_classique.aws_route_table_association.public["c"][0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table_association" "public" {
+      [32m+[0m[0m id             = (known after apply)
+      [32m+[0m[0m route_table_id = (known after apply)
+      [32m+[0m[0m subnet_id      = (known after apply)
+    }
+
+[1m  # module.subnet_classique.aws_route_table_association.public["d"][0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table_association" "public" {
+      [32m+[0m[0m id             = (known after apply)
+      [32m+[0m[0m route_table_id = (known after apply)
+      [32m+[0m[0m subnet_id      = (known after apply)
+    }
+
+[1m  # module.subnet_classique.aws_subnet.private["c"][0m will be created
+[0m  [32m+[0m[0m resource "aws_subnet" "private" {
+      [32m+[0m[0m arn                                            = (known after apply)
+      [32m+[0m[0m assign_ipv6_address_on_creation                = false
+      [32m+[0m[0m availability_zone                              = "eu-west-3c"
+      [32m+[0m[0m availability_zone_id                           = (known after apply)
+      [32m+[0m[0m cidr_block                                     = "10.0.6.0/24"
+      [32m+[0m[0m enable_dns64                                   = false
+      [32m+[0m[0m enable_resource_name_dns_a_record_on_launch    = false
+      [32m+[0m[0m enable_resource_name_dns_aaaa_record_on_launch = false
+      [32m+[0m[0m id                                             = (known after apply)
+      [32m+[0m[0m ipv6_cidr_block_association_id                 = (known after apply)
+      [32m+[0m[0m ipv6_native                                    = false
+      [32m+[0m[0m map_public_ip_on_launch                        = false
+      [32m+[0m[0m owner_id                                       = (known after apply)
+      [32m+[0m[0m private_dns_hostname_type_on_launch            = (known after apply)
+      [32m+[0m[0m tags                                           = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-private-c"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all                                       = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-private-c"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc_id                                         = "vpc-0075517d3aaf9d5a8"
+    }
+
+[1m  # module.subnet_classique.aws_subnet.private["d"][0m will be created
+[0m  [32m+[0m[0m resource "aws_subnet" "private" {
+      [32m+[0m[0m arn                                            = (known after apply)
+      [32m+[0m[0m assign_ipv6_address_on_creation                = false
+      [32m+[0m[0m availability_zone                              = "eu-west-3d"
+      [32m+[0m[0m availability_zone_id                           = (known after apply)
+      [32m+[0m[0m cidr_block                                     = "10.0.8.0/24"
+      [32m+[0m[0m enable_dns64                                   = false
+      [32m+[0m[0m enable_resource_name_dns_a_record_on_launch    = false
+      [32m+[0m[0m enable_resource_name_dns_aaaa_record_on_launch = false
+      [32m+[0m[0m id                                             = (known after apply)
+      [32m+[0m[0m ipv6_cidr_block_association_id                 = (known after apply)
+      [32m+[0m[0m ipv6_native                                    = false
+      [32m+[0m[0m map_public_ip_on_launch                        = false
+      [32m+[0m[0m owner_id                                       = (known after apply)
+      [32m+[0m[0m private_dns_hostname_type_on_launch            = (known after apply)
+      [32m+[0m[0m tags                                           = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-private-d"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all                                       = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-private-d"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc_id                                         = "vpc-0075517d3aaf9d5a8"
+    }
+
+[1m  # module.subnet_classique.aws_subnet.public["c"][0m will be created
+[0m  [32m+[0m[0m resource "aws_subnet" "public" {
+      [32m+[0m[0m arn                                            = (known after apply)
+      [32m+[0m[0m assign_ipv6_address_on_creation                = false
+      [32m+[0m[0m availability_zone                              = "eu-west-3c"
+      [32m+[0m[0m availability_zone_id                           = (known after apply)
+      [32m+[0m[0m cidr_block                                     = "10.0.5.0/24"
+      [32m+[0m[0m enable_dns64                                   = false
+      [32m+[0m[0m enable_resource_name_dns_a_record_on_launch    = false
+      [32m+[0m[0m enable_resource_name_dns_aaaa_record_on_launch = false
+      [32m+[0m[0m id                                             = (known after apply)
+      [32m+[0m[0m ipv6_cidr_block_association_id                 = (known after apply)
+      [32m+[0m[0m ipv6_native                                    = false
+      [32m+[0m[0m map_public_ip_on_launch                        = true
+      [32m+[0m[0m owner_id                                       = (known after apply)
+      [32m+[0m[0m private_dns_hostname_type_on_launch            = (known after apply)
+      [32m+[0m[0m tags                                           = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-public-c"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all                                       = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-public-c"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc_id                                         = "vpc-0075517d3aaf9d5a8"
+    }
+
+[1m  # module.subnet_classique.aws_subnet.public["d"][0m will be created
+[0m  [32m+[0m[0m resource "aws_subnet" "public" {
+      [32m+[0m[0m arn                                            = (known after apply)
+      [32m+[0m[0m assign_ipv6_address_on_creation                = false
+      [32m+[0m[0m availability_zone                              = "eu-west-3d"
+      [32m+[0m[0m availability_zone_id                           = (known after apply)
+      [32m+[0m[0m cidr_block                                     = "10.0.7.0/24"
+      [32m+[0m[0m enable_dns64                                   = false
+      [32m+[0m[0m enable_resource_name_dns_a_record_on_launch    = false
+      [32m+[0m[0m enable_resource_name_dns_aaaa_record_on_launch = false
+      [32m+[0m[0m id                                             = (known after apply)
+      [32m+[0m[0m ipv6_cidr_block_association_id                 = (known after apply)
+      [32m+[0m[0m ipv6_native                                    = false
+      [32m+[0m[0m map_public_ip_on_launch                        = true
+      [32m+[0m[0m owner_id                                       = (known after apply)
+      [32m+[0m[0m private_dns_hostname_type_on_launch            = (known after apply)
+      [32m+[0m[0m tags                                           = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-public-d"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all                                       = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Name"        = "classique-public-d"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m vpc_id                                         = "vpc-0075517d3aaf9d5a8"
+    }
+
+[1m  # module.waf_alb.aws_wafv2_web_acl.this[0m will be created
+[0m  [32m+[0m[0m resource "aws_wafv2_web_acl" "this" {
+      [32m+[0m[0m application_integration_url = (known after apply)
+      [32m+[0m[0m arn                         = (known after apply)
+      [32m+[0m[0m capacity                    = (known after apply)
+      [32m+[0m[0m description                 = "WAF for ALB in Classique"
+      [32m+[0m[0m id                          = (known after apply)
+      [32m+[0m[0m lock_token                  = (known after apply)
+      [32m+[0m[0m name                        = "waf-alb"
+      [32m+[0m[0m name_prefix                 = (known after apply)
+      [32m+[0m[0m scope                       = "REGIONAL"
+      [32m+[0m[0m tags                        = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+      [32m+[0m[0m tags_all                    = {
+          [32m+[0m[0m "Environment" = "classique"
+          [32m+[0m[0m "Project"     = "S_Vs_C_2025"
+        }
+
+      [32m+[0m[0m default_action {
+          [32m+[0m[0m allow {
+            }
+        }
+
+      [32m+[0m[0m rule {
+          [32m+[0m[0m name     = "LimitRequests1000Per5Minutes"
+          [32m+[0m[0m priority = 10
+
+          [32m+[0m[0m action {
+              [32m+[0m[0m block {
+                }
+            }
+
+          [32m+[0m[0m statement {
+              [32m+[0m[0m rate_based_statement {
+                  [32m+[0m[0m aggregate_key_type    = "IP"
+                  [32m+[0m[0m evaluation_window_sec = 300
+                  [32m+[0m[0m limit                 = 1000
+                }
+            }
+
+          [32m+[0m[0m visibility_config {
+              [32m+[0m[0m cloudwatch_metrics_enabled = true
+              [32m+[0m[0m metric_name                = "RateLimit"
+              [32m+[0m[0m sampled_requests_enabled   = true
+            }
+        }
+      [32m+[0m[0m rule {
+          [32m+[0m[0m name     = "AWS-AWSManagedRulesCommonRuleSet"
+          [32m+[0m[0m priority = 1
+
+          [32m+[0m[0m override_action {
+              [32m+[0m[0m none {}
+            }
+
+          [32m+[0m[0m statement {
+              [32m+[0m[0m managed_rule_group_statement {
+                  [32m+[0m[0m name        = "AWSManagedRulesCommonRuleSet"
+                  [32m+[0m[0m vendor_name = "AWS"
+                    [90m# (1 unchanged attribute hidden)[0m[0m
+                }
+            }
+
+          [32m+[0m[0m visibility_config {
+              [32m+[0m[0m cloudwatch_metrics_enabled = true
+              [32m+[0m[0m metric_name                = "AWSCommonRules"
+              [32m+[0m[0m sampled_requests_enabled   = true
+            }
+        }
+
+      [32m+[0m[0m visibility_config {
+          [32m+[0m[0m cloudwatch_metrics_enabled = true
+          [32m+[0m[0m metric_name                = "waf-alb"
+          [32m+[0m[0m sampled_requests_enabled   = true
+        }
+    }
+
+[1mPlan:[0m 33 to add, 0 to change, 0 to destroy.
+[0m
+Changes to Outputs:
+  [32m+[0m[0m alb_dns_name = (known after apply)
+[90m
+─────────────────────────────────────────────────────────────────────────────[0m
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
