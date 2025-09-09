@@ -39,7 +39,7 @@ Client → API Gateway → Lambda (Python) → Aurora Serverless v2
 
 ```bash
 # Outils requis
-terraform >= 1.5
+terraform >= 1.5.0
 aws-cli >= 2.0
 ```
 
@@ -48,17 +48,18 @@ aws-cli >= 2.0
 ## Structure du Projet
 
 ```
-├── bootstrap/
-├── envs/
-│   ├── shared/
-│   ├── classique/
-│   └── serverless/
+terraform/
+├── bootstrap/          # Backend S3 + verrous DynamoDB
+├── shared/            # VPC, certificats, secrets  
+├── classique/         # Infrastructure traditionnelle
+└── serverless/        # Infrastructure cloud-native
+```
 
 ## Démarrage Rapide
 
 ### 1. Initialiser le Backend Terraform
 ```bash
-cd /bootstrap
+cd terraform/bootstrap
 terraform init
 terraform apply
 ```
@@ -154,9 +155,11 @@ VPC Endpoints :   0,01$/heure par endpoint
 
 ### Cost Explorer - Analyse des Coûts
 
-*[Section à compléter avec captures Cost Explorer]*
+![Cost Explorer Classique](docs/assets/screenshots/interfaces/cost-explorer-classique.png)
 
-Les métriques seront filtrées par tags :
+![Cost Explorer Serverless](docs/assets/screenshots/interfaces/cost-explorer-serverless.png)
+
+Les métriques sont filtrées par tags :
 ```hcl
 tags = {
   Environment = "classique"  # ou "serverless"
@@ -297,8 +300,7 @@ L'application web permet de :
 **Objectif** : Démonstration pratique des compétences Infrastructure as Code  
 **Méthodologie** : Analyse comparative basée sur données réelles de coût et performance
 
-Ce projet illustre une approche d'architecte cloud : comparaison quantitative, décisions justifiées par des données, et recommandations adaptées au contexte business plutôt qu'aux préférences techniques. méthodologiques  
-
+Ce projet illustre une approche d'architecte cloud : comparaison quantitative, décisions justifiées par des données, et recommandations adaptées au contexte business plutôt qu'aux préférences techniques. méthodologiques   
 
 Ce projet illustre une approche d'architecte cloud : comparaison quantitative, décisions justifiées par des données, et recommandations adaptées au contexte business.
 
