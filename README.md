@@ -48,18 +48,17 @@ aws-cli >= 2.0
 ## Structure du Projet
 
 ```
-terraform/
-├── bootstrap/          # Backend S3 + verrous DynamoDB
-├── shared/            # VPC, certificats, secrets  
-├── classique/         # Infrastructure traditionnelle
-└── serverless/        # Infrastructure cloud-native
-```
+├── bootstrap/
+├── envs/
+│   ├── shared/
+│   ├── classique/
+│   └── serverless/
 
 ## Démarrage Rapide
 
 ### 1. Initialiser le Backend Terraform
 ```bash
-cd terraform/bootstrap
+cd /bootstrap
 terraform init
 terraform apply
 ```
@@ -89,7 +88,7 @@ terraform apply
 ### Tests de Connectivité Base de Données
 
 **Test Architecture Classique :**
-![Test DB Classique](docs/assets/screenshots/interfaces/db-test-classique.png)
+[![Test DB Classique](docs/assets/screenshots/interfaces/db-test-classique.png)](https://github.com/Z3r0d1abl0/Serverless_VS_Classique_2025/tree/main/docs/assets/screenshots/interfaces)
 
 **Flux technique :**
 1. **Client** → **ALB** (Application Load Balancer)
@@ -103,7 +102,7 @@ terraform apply
 - Connexion stable via VPC privé
 
 **Test Architecture Serverless :**
-![Test DB Serverless](docs/assets/screenshots/interfaces/db-test-serverless.png)
+[![Test DB Serverless](docs/assets/screenshots/interfaces/db-test-serverless.png)](https://github.com/Z3r0d1abl0/Serverless_VS_Classique_2025/tree/main/docs/assets/screenshots/interfaces)
 
 **Flux technique :**
 1. **Client** → **API Gateway**
@@ -155,17 +154,16 @@ VPC Endpoints :   0,01$/heure par endpoint
 
 ### Cost Explorer - Analyse des Coûts
 
-![Cost Explorer Classique](docs/assets/screenshots/interfaces/cost-explorer-classique.png)
+*[Section à compléter avec captures Cost Explorer]*
 
-![Cost Explorer Serverless](docs/assets/screenshots/interfaces/cost-explorer-serverless.png)
-
-Les métriques sont filtrées par tags :
+Les métriques seront filtrées par tags :
 ```hcl
 tags = {
   Environment = "classique"  # ou "serverless"
   Project     = "Serverless_VS_Classique_2025"
   CostCenter  = "classique-architecture"
 }
+```
 
 ## Surveillance
 
@@ -218,10 +216,10 @@ Chaque architecture fournit :
 
 ```bash
 # Détruire dans l'ordre inverse
-cd terraform/serverless && terraform destroy
+cd envs/serverless && terraform destroy
 cd ../classique && terraform destroy
 cd ../shared && terraform destroy
-cd ../bootstrap && terraform destroy
+cd ../../bootstrap && terraform destroy
 ```
 
 ## Documentation
@@ -295,9 +293,12 @@ L'application web permet de :
 
 ## Contexte du Projet
 
-**Profil** : Projet de reconversion professionnelle avec 5 mois d'expérience cloud intensive  
-**Objectif** : Démonstration de compétences architecturales et méthodologiques  
-**Niveau** : Senior DevOps/Cloud Architect par compétences démontrées  
+**Profil** : Projet de reconversion professionnelle - formation cloud accélérée  
+**Objectif** : Démonstration pratique des compétences Infrastructure as Code  
+**Méthodologie** : Analyse comparative basée sur données réelles de coût et performance
+
+Ce projet illustre une approche d'architecte cloud : comparaison quantitative, décisions justifiées par des données, et recommandations adaptées au contexte business plutôt qu'aux préférences techniques. méthodologiques  
+
 
 Ce projet illustre une approche d'architecte cloud : comparaison quantitative, décisions justifiées par des données, et recommandations adaptées au contexte business.
 
