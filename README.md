@@ -257,8 +257,6 @@ tags = {
   Environment = "classique"
   Project     = "S_Vs_C_2025"
   CostCenter  = "classique-architecture"
-  Owner       = "cloud-architect"
-  Terraform   = "true"
 }
 
 # Tags pour architecture serverless  
@@ -266,8 +264,6 @@ tags = {
   Environment = "serverless"
   Project     = "S_Vs_C_2025" 
   CostCenter  = "serverless-architecture"
-  Owner       = "cloud-architect"
-  Terraform   = "true"
 }
 ```
 
