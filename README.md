@@ -286,13 +286,15 @@ Ces tags permettent :
 ### Cost Explorer - Analyse des Coûts
 
 ![Cost Explorer Classique](docs/assets/screenshots/interfaces/cost-explorer-classique.png)
+            Tag "Classique"
 
 ![Cost Explorer Serverless](docs/assets/screenshots/interfaces/cost-explorer-serverless.png)
-
+            Tag "Serverless"
 ![Cost Explorer Total](docs/assets/screenshots/interfaces/cost-explorer-total.png)
+            Tag "Total"
 
 **Contexte des métriques :**
-- **Période analysée** : Test CloudWatch de 5 minutes avec 500 requêtes
+- **Période analysée** : Test CloudWatch de 5 minutes (60 requêtes) et avec ensuite 500 requêtes
 - **Filtrage par tags** : Environment="classique" vs Environment="serverless"
 - **Coûts totaux** : Certaines ressources partagées (VPC, certificats, KMS keys) non taggées apparaissent dans les coûts globaux
 - **Limitation** : Free Tier AWS biaise les résultats réels de production
