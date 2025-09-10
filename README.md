@@ -289,7 +289,30 @@ Ces tags permettent :
 
 ![Cost Explorer Serverless](docs/assets/screenshots/interfaces/cost-explorer-serverless.png)
 
-Les métriques sont filtrées par tags pour une attribution précise des coûts par architecture.
+![Cost Explorer Total](docs/assets/screenshots/interfaces/cost-explorer-total.png)
+
+**Contexte des métriques :**
+- **Période analysée** : Test CloudWatch de 5 minutes avec 500 requêtes
+- **Filtrage par tags** : Environment="classique" vs Environment="serverless"
+- **Coûts totaux** : Certaines ressources partagées (VPC, certificats, KMS keys) non taggées apparaissent dans les coûts globaux
+- **Limitation** : Free Tier AWS biaise les résultats réels de production
+
+Les métriques sont filtrées par tags pour une attribution précise des coûts par architecture, permettant d'isoler l'impact économique de chaque paradigme lors des tests de charge.
+
+
+### Impact Free Tier sur l'Analyse de Coûts
+
+**Limitation de l'étude :**
+Cette comparaison est réalisée dans le contexte AWS Free Tier, ce qui biaise certains résultats :
+
+- **Services non couverts** : ALB, NAT Gateway, Aurora → Coûts réels visibles
+- **Services partiellement couverts** : EC2 t3.small, RDS t3.medium → Surcoût visible
+- **Services Free Tier** : Lambda < 1M req/mois → Coût sous-estimé
+
+**Projection post-Free Tier :**
+Les économies serverless seraient **plus marquées** en production réelle, car :
+- Lambda facturation complète : +0,20$/1M requêtes
+- Coûts classiques identiques (ALB/NAT déjà facturés)
 
 ## Sécurité
 
@@ -438,6 +461,8 @@ L'application web permet de :
 - **Point d'équilibre** : ~75k requêtes/jour
 - **Serverless avantagé** : Charges faibles/variables (69% économie)
 - **Classique avantagé** : Charges élevées stables (>100k req/jour)
+
+
 
 ### Recommandations par Contexte
 
