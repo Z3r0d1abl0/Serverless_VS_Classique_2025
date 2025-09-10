@@ -202,19 +202,29 @@ terraform apply
 - **Cost** : Resource consumption, scaling events, idle time
 - **Reliability** : Health checks, failover events, availability zones
 
-**Alerting Strategy :**
-```
-Classique : CPU > 70%, DB connections > 80%, ALB 5xx > 1%
-Serverless : Lambda errors > 0.1%, Aurora ACU > 3.5, API Gateway 4xx > 5%
-```
+Observabilité & Monitoring Strategy
+Monitoring Implémenté :
+Dashboards CloudWatch :
 
-**Dashboards pour SRE :**
-- **Real-time** : Latence, throughput, erreurs en temps réel
-- **Capacity planning** : Tendances utilisation, prédictions scaling
-- **Cost optimization** : Attribution par service, recommandations rightsizing
+Dashboard classique : Auto Scaling Group CPU, ALB Performance, RDS CPU & Connections
+Dashboard serverless : Lambda Performance, CloudFront Requests, Aurora ACU & Connections
+Logique adaptative : Widgets conditionnels selon les services déployés
+Vue temps réel : Métriques avec période 5 minutes, statistiques moyennes
 
-Cette instrumentation démontre une approche **Site Reliability Engineering** mature avec monitoring proactif, alerting intelligent et capacity planning data-driven.
+Alerting de Coût :
 
+Seuil configuré : 15$ USD par jour
+Métrique : AWS/Billing EstimatedCharges
+Évaluation : Daily check avec alarme si dépassement
+
+Architecture de Monitoring :
+hcl# Dashboards séparés par environnement
+resource "aws_cloudwatch_dashboard" "classique"   # ALB + ASG + RDS
+resource "aws_cloudwatch_dashboard" "serverless"  # Lambda + CloudFront + Aurora
+
+# Alarme coût globale
+resource "aws_cloudwatch_metric_alarm" "cost_alert" # 15$ threshold
+Cette approche fournit une observabilité essentielle avec des dashboards comparatifs et un contrôle des coûts automatisé.
 ## Analyse des Coûts
 
 ### Répartition des Coûts Mensuels
