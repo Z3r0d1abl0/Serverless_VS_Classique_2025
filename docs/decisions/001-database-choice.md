@@ -1,67 +1,57 @@
-# ADR-001: Choix des Technologies de Base de Données
-
-## Statut
+ADR-001: Choix des Technologies de Base de Données
+Statut
 Accepté
+Contexte
+Pour comparer objectivement les architectures classique et serverless, il faut choisir des technologies de base de données représentatives de chaque approche tout en maintenant une charge de travail comparable.
+Options Considérées
+Architecture Classique:
 
-## Contexte
-Pour comparer objectivement les architectures classique et serverless, nous devons choisir des technologies de base de données représentatives de chaque approche tout en gardant une charge de travail comparable.
+RDS MySQL (choisi) - Modèle traditionnel avec sizing fixe
+RDS PostgreSQL - Fonctionnalités avancées mais complexité supplémentaire
+EC2 avec MySQL auto-géré - Contrôle total mais maintenance élevée
 
-## Options Considérées
+Architecture Serverless:
 
-### Architecture Classique
-1. **RDS MySQL** (choisi)
-2. RDS PostgreSQL
-3. EC2 avec MySQL auto-géré
+Aurora Serverless v2 (choisi) - Auto-scaling avec compatibilité MySQL
+Aurora Serverless v1 - Pause automatique mais scaling plus lent
+DynamoDB - NoSQL natif mais nécessite refonte applicative
 
-### Architecture Serverless
-1. **Aurora Serverless v2** (choisi)
-2. Aurora Serverless v1
-3. DynamoDB
-4. RDS Proxy + RDS
+Décision
 
-## Décision
+Classique: RDS MySQL t3.medium multi-AZ
+Serverless: Aurora Serverless v2 MySQL (0.5-4 ACU)
 
-**Classique**: RDS MySQL t3.medium multi-AZ
-**Serverless**: Aurora Serverless v2 MySQL (0.5-4 ACU)
+Justification
+RDS MySQL:
 
-## Justification
+Coût prévisible: 85€/mois fixe, budgétisation simple
+Performance stable: Pas de variabilité liée au scaling
+Multi-AZ: Haute disponibilité avec failover automatique
+Opérationnalité: Backup automatisé, maintenance window gérée
 
-### RDS MySQL Classique
-- **Prévisibilité**: Coût et performance fixes, faciles à budgétiser
-- **Maturité**: Technologie éprouvée avec expertise répandue
-- **Multi-AZ**: Haute disponibilité intégrée
-- **Monitoring**: Métriques CloudWatch standardisées
+Aurora Serverless v2:
 
-### Aurora Serverless v2 vs v1
-- **v2 avantages**: Pas de pause automatique, scaling plus granulaire (0.5 ACU vs 1 ACU)
-- **v2 avantages**: Scaling en secondes vs minutes pour v1
-- **v2 inconvénient**: Coût minimal plus élevé (0.5 ACU permanent vs pause complète v1)
+Élasticité: Scaling de 0.5 à 4 ACU selon la charge réelle
+Pay-per-use: 0.12€/ACU-heure, optimal pour charges variables
+Compatibilité: Même requêtes SQL pour comparaison équitable
+Scaling rapide: Ajustement en secondes vs minutes pour v1
 
-### Aurora v2 vs DynamoDB
-- **Similarité de workload**: MySQL permet la même logique applicative
-- **Comparaison équitable**: Même requêtes SQL sur les deux architectures
-- **Learning curve**: DynamoDB nécessiterait une réécriture complète
+Conséquences
+Positives:
 
-## Conséquences
+Comparaison directe des modèles économiques (fixe vs usage)
+Même logique applicative sur les deux architectures
+Métriques CloudWatch comparables (latence, connexions)
 
-### Positives
-- Comparaison directe des modèles économiques (fixe vs usage)
-- Même charge de travail applicative sur les deux architectures
-- Métriques CloudWatch comparables (temps de connexion, requêtes/sec)
+Négatives:
 
-### Négatives
-- Aurora v2 a un coût minimal incompressible (0.5 ACU = ~35€/mois)
-- Ne représente pas les patterns NoSQL natifs cloud
-- Complexité réseau supplémentaire (VPC endpoints pour Aurora)
+Aurora v2 a un coût incompressible (0.5 ACU minimum = ~35€/mois)
+Complexité réseau supplémentaire avec VPC endpoints pour Aurora
+Ne démontre pas les patterns NoSQL cloud-native
 
-## Métriques de Validation
-- Temps de réponse des requêtes SQL
-- Coût par requête exécutée
-- Temps de scaling sous charge
-- Disponibilité (uptime)
+Métriques de Validation
 
-## Révision
-Cette décision sera réévaluée si :
-- Aurora Serverless v3 est disponible
-- Les coûts v2 changent significativement
-- Un pattern NoSQL devient nécessaire pour la démonstration
+Temps de réponse des requêtes
+Coût par transaction
+Comportement sous montée de charge
+Disponibilité effective
